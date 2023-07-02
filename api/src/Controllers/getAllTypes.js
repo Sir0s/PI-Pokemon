@@ -15,6 +15,7 @@ const getAllTypes =  async (req, res) => {
                                             return { name: tipo.name }
                                             });
                 await Types.bulkCreate(typesList);
+                
                 res.status(200).json(typesList);
             }
             catch(error){
@@ -24,6 +25,7 @@ const getAllTypes =  async (req, res) => {
         else {
             return res.status(200).json(typeList); 
         }
+       
     } 
     catch (error)
     {
