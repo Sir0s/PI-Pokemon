@@ -19,7 +19,9 @@ async function getPokemonByName(name) {
     });
 
     if (!data && !searchDB) {
-      return res.status(404).json({ error: "Pokémon not found" });
+      const error = new Error("Pokémon not found");
+      error.statusCode = 404;
+      throw error;
     }
  
     const poke = {

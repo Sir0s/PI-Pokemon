@@ -1,9 +1,22 @@
-import './App.css';
+import React from 'react';
+import { Routes, Route  } from 'react-router-dom'
+import styles from './App.module.css'
+import LandingPage from './Components/Landing/LandingPage';
+import Home from './Components/Home/Home';
+import Details from './Components/Details/Details';
+import Form from './Components/Form/Form';
 
+//const {pathname} = useLocation();
 function App() {
   return (
-    <div className="App">
-      <h1>Henry Pokemon</h1>
+    <div className={styles.App}>
+      {/*  { {pathname !== "/" && <Nav onsearch={onSearch}/>} } */}
+      <Routes>
+      <Route exact path="/" element={<LandingPage/>} />
+      <Route path="/pokemons" element={<Home/>} />
+      <Route exact path="/pokemons/:id" element={<Details/>} />
+      <Route exact path= '/creator' element={<Form/>} />
+      </Routes>
     </div>
   );
 }

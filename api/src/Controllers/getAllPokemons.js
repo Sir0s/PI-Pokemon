@@ -4,9 +4,10 @@ const URL = "https://pokeapi.co/api/v2/pokemon";
 
 const getAllPokemons = async (req, res) => {
   try {
-    const apiResponse = await axios.get(URL);
-    const count = apiResponse.data.count;
-
+    //const apiResponse = await axios.get(URL);
+    //const count = apiResponse.data.count;
+    const count = 386; //descomentar las lineas anteriores para una lista entera de la api de pokemon
+    // o usar los 386 pokemos hasta jhoto
     const arrayResultApi = await axios.get(`${URL}?limit=${count}&offset=0`).then(response => response.data.results);
 
     const arrayPromises = arrayResultApi.map(poke => axios.get(poke.url));

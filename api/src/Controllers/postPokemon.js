@@ -15,7 +15,7 @@ const postPokemon = async (req, res) => {
 
   const formattedName = name.trim().replace(/\s+/g, " ");
 
-  let pokeSearch = await getPokemonByName({ query: { name: formattedName } });
+  let pokeSearch = await getPokemonByName(formattedName);
 
   if (pokeSearch.error) {
     return res.status(400).json({ error: `El nombre de Pokémon: ${formattedName} no está disponible.` });
