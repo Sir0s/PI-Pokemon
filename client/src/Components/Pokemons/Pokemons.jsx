@@ -1,12 +1,13 @@
 import React from "react";
 import Pokemon from "../Pokemon/Pokemon";
 import { Link } from "react-router-dom";
+import styles from "./Pokemons.module.css"
 
 export default function Pokemons({ pokes }) {
 
   return (
-    <div>
-      <h1>Pokemons</h1>
+    <div className={styles.cards}>
+      
       {pokes.map((pokemon) => {
         return (
           <Link to={`/pokemons/${pokemon.id}`} key={pokemon.id}>

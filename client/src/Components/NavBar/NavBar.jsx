@@ -9,7 +9,9 @@ export default function NavBar() {
                  <li>
                     <Link to="/pokemons"> <button> Home </button></Link>
                 </li>
-                
+                <li>
+                    <Link to="/new_pokemon"> <button> New Poke </button></Link>
+                </li>
                 </ul>
             </div>
         </div>

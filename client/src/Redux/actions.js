@@ -6,6 +6,8 @@ import {
   GET_TYPES,
   SEARCH_POKEMON,
   RESET_SEARCH,
+  CREATE_POKEMON,
+  ERROR_CREATION
   
 } from "./action_types";
 const URL_SERVER_POKEMONS = "http://localhost:3001/pokemons";
@@ -71,8 +73,7 @@ export function searchPokemon(search) {
             payload: response.data,
           });
         })
-        .catch((error) => {
-                
+        .catch((error) => {  
             dispatch({
               type: SEARCH_POKEMON,
               payload: error.message,
@@ -88,3 +89,17 @@ export const resetSearch = () => {
       type: RESET_SEARCH,
     };
   }
+
+export const createPokemon = (pokemon) =>{
+  return function (dispatch){
+    axios.post(URL_SERVER_POKEMONS, pokemon).then((response) => {
+      dispatch({
+        type: CREATE_POKEMON,
+        payload: response.data,
+      });
+    }).catch((error) =>{dispatch({
+      type: ERROR_CREATION,
+      payload: error.message,
+    })})
+  }
+}

@@ -1,0 +1,38 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .pokemonList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start
+  }
+  
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        
+    }
+  
+  .pageButton {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #ccc;
+    cursor: pointer;
+  }
+  
+  .pageButton.disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  

@@ -9,6 +9,7 @@ export default function SearchBar() {
   const navigate = useNavigate();
   const founded = useSelector((state) => state.found_pokemon);
   const [error, setError] = useState(null);
+  
  
   const handleChange = (event) => {
     event.preventDefault();
@@ -21,8 +22,7 @@ export default function SearchBar() {
       navigate(`/pokemons/${founded.id}`);
       dispatch(resetSearch());
     } 
-    
-  }, [founded]);
+  }, [founded,dispatch,navigate]);
   const handleKey = (event) =>{
     if (event.key === 'Enter'){
       handleClick(event);
@@ -31,20 +31,16 @@ export default function SearchBar() {
 
   const handleClick = (event) => {
     event.preventDefault();
-   
-      if (/^\d+$/.test(search)) {
-        setError("Por favor ingrese un nombre valido.");
-        setSearch('')
-      } else {
-        try {
-          const response = dispatch(searchPokemon(search));
-          if (!response) setError("Pokémon no encontrado.")
-        } catch (error) {
-          setError(error.message)
-        }
-        setSearch('');
-      }
-    
+
+    if (/^\d+$/.test(search)) {
+      setError("Por favor ingrese un nombre valido.");
+      setSearch("");
+    } else {
+      setError(null)
+      dispatch(searchPokemon(search))
+      setSearch("");
+      
+    }
   };
  
 

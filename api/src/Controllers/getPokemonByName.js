@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Pokemons, Types } = require("../db");
+const { Pokemons } = require("../db");
 const { Sequelize } = require("sequelize");
 
 const URL = "https://pokeapi.co/api/v2/pokemon/";
@@ -17,7 +17,7 @@ async function getPokemonByName(name) {
         },
       },
     });
-
+    
     if (!data && !searchDB) {
       const error = new Error("Pokémon not found");
       error.statusCode = 404;

@@ -1,14 +1,15 @@
 import React from "react";
+import styles from "./Pokemon.module.css"
 
 export default function Pokemon(props) {
   
   return (
-    <div>
-      <div>
-        <h2>{props.name}</h2>
+    <div className={styles.card} key={props.id}>
+      <div >
+        <h2 className="card-name">{props.name}</h2>
       </div>
       <div>
-        <img src={props.image} alt={props.name} />
+        <img className={styles.image} src={props.image} alt={props.name} />
       </div>
       <div>
         <span>Attack: {props.attack}</span>

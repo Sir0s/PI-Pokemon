@@ -13,7 +13,8 @@ const getAllPokemons = async (req, res) => {
     const arrayPromises = arrayResultApi.map(poke => axios.get(poke.url));
     const pokemonResponses = await Promise.all(arrayPromises);
 
-    const arrayPokemonsApi = pokemonResponses.map(poke => ({
+  const arrayPokemonsApi = pokemonResponses.map(poke => 
+    ({
       id: poke.data.id,
       name: poke.data.name,
       image: poke.data.sprites.other.dream_world.front_default,
@@ -23,10 +24,9 @@ const getAllPokemons = async (req, res) => {
       speed: poke.data.stats[3].base_stat,
       height: poke.data.height,
       weight: poke.data.weight,
-      type: poke.data.types.map(tipo => ({
-        name: tipo.type.name,
-      })),
-    }));
+      type: poke.data.types.map(tipo => ({name: tipo.type.name}))    
+    })
+  );
 
     const arrayPokemonsDb = await Pokemons.findAll({
       include: {
@@ -37,9 +37,9 @@ const getAllPokemons = async (req, res) => {
         },
       },
     });
-
+    console.log(arrayPokemonsDb)
     const allPokemons = arrayPokemonsApi.concat(arrayPokemonsDb);
-    return res.json(allPokemons);
+    return res.status(200).json(allPokemons);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

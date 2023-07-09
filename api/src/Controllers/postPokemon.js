@@ -2,7 +2,8 @@ const { Pokemons, Types } = require("../db");
 const { getPokemonByName } = require("./getPokemonByName");
 
 const postPokemon = async (req, res) => {
-  const { name, image, hp, attack, defense, speed, height, weight, types } = req.body;
+  const { name, image, hp, attack, defense, speed, height, weight, types } =
+    req.body;
 
   if (!name || name.trim() === "") {
     return res.status(400).json({ error: "El nombre es un campo requerido" });
@@ -10,7 +11,7 @@ const postPokemon = async (req, res) => {
 
   const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/;
   if (!nameRegex.test(name)) {
-    return res.status(400).json({ error: "El nombre debe contener solo caracteres alfabéticos y un solo espacio entre palabras" });
+    return res.status(400).json({error: "El nombre debe contener solo caracteres alfabéticos y un solo espacio entre palabras"});
   }
 
   const formattedName = name.trim().replace(/\s+/g, " ");
@@ -18,9 +19,11 @@ const postPokemon = async (req, res) => {
   let pokeSearch = await getPokemonByName(formattedName);
 
   if (pokeSearch.error) {
-    return res.status(400).json({ error: `El nombre de Pokémon: ${formattedName} no está disponible.` });
+    return res.status(400).json({error: `El nombre de Pokémon: ${formattedName} no está disponible.`});
   } else {
+
     try {
+
       const newPokemon = await Pokemons.create(req.body);
 
       if (newPokemon && types && Array.isArray(types)) {
@@ -47,7 +50,7 @@ const postPokemon = async (req, res) => {
         ],
       });
 
-      return res.status(200).json(resultPokemon);
+      return res.status(200).json(resultPokemon[0]);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -55,4 +58,3 @@ const postPokemon = async (req, res) => {
 };
 
 module.exports = { postPokemon };
-
