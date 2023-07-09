@@ -9,16 +9,7 @@ const getPokemonById = async (req, res) => {
     let poke;
 
     if (isUUID) {
-      const dbPokemon = await Pokemons.findByPk(id, {
-      /*   include: {
-          attributes: ['name'],
-          model: Types,
-          through: {
-            attributes: [],
-          },
-        }, */
-        include: { model: Types, as: "Types" }
-      });
+      const dbPokemon = await Pokemons.findByPk(id, {include: { model: Types, as: "Types" }});
 
       if (dbPokemon) {
         poke = {

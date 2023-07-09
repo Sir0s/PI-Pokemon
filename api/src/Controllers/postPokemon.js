@@ -2,7 +2,7 @@ const { Pokemons, Types } = require("../db");
 const { getPokemonByName } = require("./getPokemonByName");
 
 const postPokemon = async (req, res) => {
-  const { name, image, hp, attack, defense, speed, height, weight, types } =
+  const [name, image, hp, attack, defense, speed, height, weight, types]   =
     req.body;
 
   if (!name || name.trim() === "") {
@@ -42,12 +42,7 @@ const postPokemon = async (req, res) => {
         where: {
           name: formattedName,
         },
-        include: [
-          {
-            model: Types,
-            attributes: ["id", "name"],
-          },
-        ],
+        include: [Types],
       });
 
       return res.status(200).json(resultPokemon[0]);

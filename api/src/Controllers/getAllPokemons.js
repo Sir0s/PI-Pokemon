@@ -9,7 +9,6 @@ const getAllPokemons = async (req, res) => {
     const count = 386; //descomentar las lineas anteriores para una lista entera de la api de pokemon
     // o usar los 386 pokemos hasta jhoto
     const arrayResultApi = await axios.get(`${URL}?limit=${count}&offset=0`).then(response => response.data.results);
-
     const arrayPromises = arrayResultApi.map(poke => axios.get(poke.url));
     const pokemonResponses = await Promise.all(arrayPromises);
 
@@ -32,12 +31,10 @@ const getAllPokemons = async (req, res) => {
       include: {
         attributes: ["name"],
         model: Types,
-        through: {
-          attributes: [],
-        },
+        through: {attributes: []},
       },
     });
-    console.log(arrayPokemonsDb)
+    
     const allPokemons = arrayPokemonsApi.concat(arrayPokemonsDb);
     return res.status(200).json(allPokemons);
   } catch (error) {

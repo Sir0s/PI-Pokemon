@@ -1,16 +1,6 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getPokemons, getTypes } from "../../Redux/actions";
 
-export default function LandingPage() {
-  let dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getPokemons());
-    dispatch(getTypes());
-  }, []);
-
+  export default function LandingPage() {
   return (
     <div>
       <div>

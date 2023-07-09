@@ -1,48 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { searchPokemon, resetSearch } from '../../Redux/actions';
 
-export default function SearchBar() {
+export default function SearchBar({ setSearchResults }) {
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const founded = useSelector((state) => state.found_pokemon);
   const [error, setError] = useState(null);
-  
- 
+
   const handleChange = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
-    setError(null)
+    setError(null);
   };
 
   useEffect(() => {
     if (founded && founded.id) {
-      navigate(`/pokemons/${founded.id}`);
+      setSearchResults([founded]);
       dispatch(resetSearch());
-    } 
-  }, [founded,dispatch,navigate]);
-  const handleKey = (event) =>{
-    if (event.key === 'Enter'){
+    }
+  }, [founded, dispatch, setSearchResults]);
+
+  const handleKey = (event) => {
+    if (event.key === 'Enter') {
       handleClick(event);
     }
-  }
+  };
 
   const handleClick = (event) => {
     event.preventDefault();
 
     if (/^\d+$/.test(search)) {
-      setError("Por favor ingrese un nombre valido.");
-      setSearch("");
+      setError('Por favor ingrese un nombre valido.');
+      setSearch('');
     } else {
-      setError(null)
-      dispatch(searchPokemon(search))
-      setSearch("");
-      
+      setError(null);
+      dispatch(searchPokemon(search));
+      setSearch('');
     }
   };
- 
 
   return (
     <div>
