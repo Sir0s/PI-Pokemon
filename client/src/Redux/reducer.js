@@ -1,4 +1,4 @@
-import {  ERROR_CREATION, CREATE_POKEMON, GET_DETAILS,RESET_DETAILS, GET_POKEMONS, GET_TYPES, SEARCH_POKEMON, RESET_SEARCH } from "./action_types";
+import {  ERROR_SEARCH, ERROR_CREATION, CREATE_POKEMON, GET_DETAILS,RESET_DETAILS, GET_POKEMONS, GET_TYPES, SEARCH_POKEMON, RESET_SEARCH } from "./action_types";
 
 const initialState = {
     pokemons: [],
@@ -6,7 +6,8 @@ const initialState = {
     details:{},
 
     found_pokemon: null,
-    error_search: null,
+    error_search: false,
+    error_search_message: '',
 
     created: false,
     error:''
@@ -43,14 +44,13 @@ const rootReducer = (state = initialState, {type, payload}) => {
         return{
             ...state,
             found_pokemon: payload,
-            error_search: null,
         }
        }
         case RESET_SEARCH: {
             return {
                 ...state,
                 found_pokemon: null,
-                error_search: null,
+                error_search: false,
             }
         }
         case ERROR_CREATION:{
@@ -61,13 +61,13 @@ const rootReducer = (state = initialState, {type, payload}) => {
         }
         case CREATE_POKEMON: {
             const { id, name, image, types, attack, defense, speed, hp } = payload;
-           // const mappedTypes = types.map((type) => ({ name: type.name }));
+            const mappedTypes = types.map((type) => ({ name: type.name }));
           
             const newPokemon = {
               id,
               name,
               image,
-              types, 
+              types : mappedTypes, 
               attack,
               defense,
               speed,
@@ -82,6 +82,14 @@ const rootReducer = (state = initialState, {type, payload}) => {
             };
           }
           
+        case ERROR_SEARCH:{
+            return {
+                ...state,
+                error_search: true, 
+                error_search_message: "Pokemon not found."
+
+            }
+        }
 
         default: return state;
     }

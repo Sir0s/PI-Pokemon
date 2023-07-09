@@ -2,14 +2,14 @@ const axios = require("axios");
 const { Pokemons, Types } = require("../db");
 const URL = "https://pokeapi.co/api/v2/pokemon/";
 
-const getPokemonById = async (req, res) => {
+async function getPokemonById(id) {
   try {
-    const { id } = req.params;
+  
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
     let poke;
 
     if (isUUID) {
-      const dbPokemon = await Pokemons.findByPk(id, {include: { model: Types, as: "Types" }});
+      const dbPokemon = await Pokemons.findByPk(id, { include: { model: Types, as: "Types" } });
 
       if (dbPokemon) {
         poke = {
@@ -48,10 +48,10 @@ const getPokemonById = async (req, res) => {
       };
     }
 
-    return res.status(200).json(poke);
+    return poke;
   } catch (error) {
-    return res.status(404).json({ error: error.message });
+    throw new Error(error.message);
   }
-};
+}
 
 module.exports = { getPokemonById };

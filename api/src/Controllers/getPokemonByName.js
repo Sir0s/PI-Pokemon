@@ -1,29 +1,14 @@
 const axios = require("axios");
-const { Pokemons } = require("../db");
-const { Sequelize } = require("sequelize");
+const { Pokemons, Types } = require("../db");
+
 
 const URL = "https://pokeapi.co/api/v2/pokemon/";
 
-async function getPokemonByName(name) {
+async function getPokemonFromApi(name) {
   try {
-    
-    const response = await axios.get(`${URL}/${name}`);
+    const response = await axios.get(`${URL}/${name.toLowerCase()}`);
     const data = response.data;
 
-     const searchDB = await Pokemons.findOne({
-      where: {
-        name: {
-          [Sequelize.Op.eq]: name,
-        },
-      },
-    });
-    
-    if (!data && !searchDB) {
-      const error = new Error("Pokémon not found");
-      error.statusCode = 404;
-      throw error;
-    }
- 
     const poke = {
       id: data.id,
       name: data.name,
@@ -39,11 +24,24 @@ async function getPokemonByName(name) {
       })),
     };
 
-    const searchResult = { ...poke, ...searchDB };
-    return searchResult;
+    return poke;
   } catch (error) {
-    return error.message ;
+   return null
   }
-};
+}
 
-module.exports = { getPokemonByName };
+async function getPokemonFromDB(name) {
+  try {
+    const searchDB = await Pokemons.findOne({
+      where: {name : name.toLowerCase()},
+      include: { model: Types, as: "Types" }
+    });
+    return searchDB
+  } catch (error) {
+   return null
+  }
+}
+
+
+
+module.exports = { getPokemonFromApi,getPokemonFromDB };

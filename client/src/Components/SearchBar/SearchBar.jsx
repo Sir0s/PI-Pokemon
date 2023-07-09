@@ -4,9 +4,10 @@ import { searchPokemon, resetSearch } from '../../Redux/actions';
 
 export default function SearchBar({ setSearchResults }) {
   const [search, setSearch] = useState('');
-  const dispatch = useDispatch();
-  const founded = useSelector((state) => state.found_pokemon);
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const foundPokemon = useSelector((state) => state.found_pokemon);
+  const errorSearch = useSelector((state) => state.error_search);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -15,11 +16,13 @@ export default function SearchBar({ setSearchResults }) {
   };
 
   useEffect(() => {
-    if (founded && founded.id) {
-      setSearchResults([founded]);
+    if (foundPokemon && foundPokemon.id) {
+      setSearchResults([foundPokemon]);
       dispatch(resetSearch());
+    } else if (errorSearch) {
+      setError('No Pokémon found');
     }
-  }, [founded, dispatch, setSearchResults]);
+  }, [foundPokemon, errorSearch, dispatch, setSearchResults]);
 
   const handleKey = (event) => {
     if (event.key === 'Enter') {
@@ -29,12 +32,10 @@ export default function SearchBar({ setSearchResults }) {
 
   const handleClick = (event) => {
     event.preventDefault();
-
     if (/^\d+$/.test(search)) {
-      setError('Por favor ingrese un nombre valido.');
+      setError('Please enter a valid name.');
       setSearch('');
     } else {
-      setError(null);
       dispatch(searchPokemon(search));
       setSearch('');
     }
@@ -42,9 +43,15 @@ export default function SearchBar({ setSearchResults }) {
 
   return (
     <div>
-      <input type="search" onChange={handleChange} onKeyPress={handleKey} value={search} />
-      <button onClick={handleClick}>Buscar</button>
-      {error && <p>{error}</p>}
+      <input
+        type="search"
+        placeholder="Enter a name to search."
+        onChange={handleChange}
+        onKeyPress={handleKey}
+        value={search}
+      />
+      <button onClick={handleClick}>Search</button>
+      {error && <p>Error: {error}</p>}
     </div>
   );
 }

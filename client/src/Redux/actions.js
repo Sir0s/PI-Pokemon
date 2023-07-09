@@ -7,7 +7,8 @@ import {
   SEARCH_POKEMON,
   RESET_SEARCH,
   CREATE_POKEMON,
-  ERROR_CREATION
+  ERROR_CREATION,
+  ERROR_SEARCH
   
 } from "./action_types";
 const URL_SERVER_POKEMONS = "http://localhost:3001/pokemons";
@@ -75,8 +76,8 @@ export function searchPokemon(search) {
         })
         .catch((error) => {  
             dispatch({
-              type: SEARCH_POKEMON,
-              payload: error.message,
+              type: ERROR_SEARCH,
+              payload: error.message
             });
           
         });

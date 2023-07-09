@@ -11,13 +11,14 @@ const FormPage = () => {
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
-  const [hp, setHp] = useState(0);
-  const [attack, setAttack] = useState(0);
-  const [defense, setDefense] = useState(0);
+  const [hp, setHp] = useState(1);
+  const [attack, setAttack] = useState(1);
+  const [defense, setDefense] = useState(1);
   const [speed, setSpeed] = useState(0);
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
   const [selectedTypes, setSelectedTypes] = useState([]);
+  const [newType, setNewType] = useState("");
 
   useEffect(() => {
     dispatch(getTypes());
@@ -25,7 +26,20 @@ const FormPage = () => {
 
   const handleTypeChange = (e) => {
     const selectedType = e.target.value;
-    setSelectedTypes([...selectedTypes, { name: selectedType }]);
+    if (selectedTypes.length < 2) {
+      setSelectedTypes([...selectedTypes, selectedType]);
+    }
+  };
+
+  const handleNewTypeChange = (e) => {
+    setNewType(e.target.value);
+  };
+
+  const handleAddNewType = () => {
+    if (newType.trim() !== "" && selectedTypes.length < 2) {
+      setSelectedTypes([...selectedTypes, newType.trim()]);
+      setNewType("");
+    }
   };
 
   const handleSubmit = (e) => {
@@ -40,7 +54,7 @@ const FormPage = () => {
       speed,
       height,
       weight,
-      type: selectedTypes,
+      types: selectedTypes,
     };
     dispatch(createPokemon(newPokemon));
   };
@@ -48,13 +62,14 @@ const FormPage = () => {
   const handleReset = () => {
     setName("");
     setImage("");
-    setHp(0);
-    setAttack(0);
-    setDefense(0);
+    setHp(1);
+    setAttack(1);
+    setDefense(1);
     setSpeed(0);
     setHeight(0);
     setWeight(0);
     setSelectedTypes([]);
+    setNewType("");
   };
 
   return (
@@ -85,10 +100,10 @@ const FormPage = () => {
         </label>
         <br />
         <label>
-          HP (0 - 999):
+          HP (1 - 999):
           <input
             type="range"
-            min={0}
+            min={1}
             max={999}
             value={hp}
             onChange={(e) => setHp(Number(e.target.value))}
@@ -98,10 +113,10 @@ const FormPage = () => {
         </label>
         <br />
         <label>
-          Attack (0 - 999):
+          Attack (1 - 999):
           <input
             type="range"
-            min={0}
+            min={1}
             max={999}
             value={attack}
             onChange={(e) => setAttack(Number(e.target.value))}
@@ -111,10 +126,10 @@ const FormPage = () => {
         </label>
         <br />
         <label>
-          Defense (0 - 999):
+          Defense (1 - 999):
           <input
             type="range"
-            min={0}
+            min={1}
             max={999}
             value={defense}
             onChange={(e) => setDefense(Number(e.target.value))}
@@ -172,6 +187,18 @@ const FormPage = () => {
             ))}
           </select>
         </label>
+        <br />
+        <div>
+          <label>New Type:</label>
+          <input
+            type="text"
+            value={newType}
+            onChange={handleNewTypeChange}
+          />
+          <button type="button" onClick={handleAddNewType}>
+            Add New Type
+          </button>
+        </div>
         <br />
         <button type="submit">Create</button>
         <button type="button" onClick={handleReset}>
