@@ -3,7 +3,7 @@ const { Types } = require('../db');
 const URL_API_TYPES = "https://pokeapi.co/api/v2/type";
 
 async function getAllTypes() {
-  try {
+
     const typeList = await Types.findAll();
 
     if (typeList.length === 0) {
@@ -16,9 +16,7 @@ async function getAllTypes() {
     } else {
       return typeList;
     }
-  } catch (error) {
-    throw new Error(error.message);
-  }
+ 
 }
 
 module.exports = { getAllTypes };

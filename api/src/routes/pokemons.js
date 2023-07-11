@@ -1,64 +1,17 @@
-const {getPokemonById} = require('../Controllers/getPokemonById');
-const {getAllPokemons} = require('../Controllers/getAllPokemons');
-const {getPokemonFromApi , getPokemonFromDB}  = require('../Controllers/getPokemonByName.js');
-const {postPokemon} = require('../Controllers/postPokemon')
-const {Router} = require('express');
+const { Router } = require('express');
 const router = Router();
 
+const getAllPokemonsHandler = require('../PokemonHandlers/getAllPokemonsHandler');
+const searchPokemonByNameHandler = require('../PokemonHandlers/searchPokemonByNameHandler');
+const getPokemonByIdHandler = require('../PokemonHandlers/getPokemonByIdHandler');
+const createPokemonHandler = require('../PokemonHandlers/postPokemonHandler');
 
-router.get("/", async (req, res) => {
-  try {
-    const allPokemons = await getAllPokemons();
-    return res.status(200).json(allPokemons);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
+router.get("/", getAllPokemonsHandler);
 
-router.get('/name', async (req, res, next) => {
-  try {
-    const { name } = req.query;
+router.get('/name', searchPokemonByNameHandler);
 
-    const pokemonSearchApi = await getPokemonFromApi(name);
-    const pokemonSearchDB = await getPokemonFromDB(name);
+router.get("/:id", getPokemonByIdHandler);
 
-    if (pokemonSearchApi !== null) {
-      return res.status(200).json(pokemonSearchApi);
-    }
+router.post('/', createPokemonHandler);
 
-    if (pokemonSearchDB !== null) {
-      return res.status(200).json(pokemonSearchDB);
-    }
-
-    return res.status(404).json({ message: 'Pokemon not found' });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
-
-  router.get("/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const poke = await getPokemonById(id);
-      return res.status(200).json(poke);
-    } catch (error) {
-      return res.status(404).json({ error: error.message });
-    }
-  });
-  
-
-  router.post('/', async (req, res) => {
-    const { name, image, hp, attack, defense, speed, height, weight, types } = req.body;
-  
-    try {
-      const newPokemon = await postPokemon(name, image, hp, attack, defense, speed, height, weight, types);
-      if(newPokemon !==null) {return res.status(200).json(newPokemon);}
-      else{return res.status(400).json({error: "Fallo en la creacion"})}
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  });
-
-
- 
 module.exports = router;

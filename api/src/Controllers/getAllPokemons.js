@@ -3,8 +3,7 @@ const { Pokemons, Types } = require("../db");
 const URL = "https://pokeapi.co/api/v2/pokemon";
 
 const getAllPokemons = async () => {
-  try {
-   
+  
     const count = 386; // Uncomment the lines below for the entire Pokemon API list
     // const apiResponse = await axios.get(URL);
     // const count = apiResponse.data.count;
@@ -35,13 +34,11 @@ const getAllPokemons = async () => {
         }
       }
     });
-    console.log(arrayPokemonsDb)
+    
     const allPokemons = arrayPokemonsApi.concat(arrayPokemonsDb);
     
     return allPokemons;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+ 
 }
 
 module.exports = {

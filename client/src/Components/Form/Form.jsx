@@ -3,18 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPokemon,resetCreated } from '../../Redux/actions';
 import Pokemon from '../Pokemon/Pokemon';
 import NavBar from "../NavBar/NavBar";
-
 import { useEffect } from 'react';
-
 
 const maxTypes = 2;
 const stringRegExp = /^[a-zA-Z]{1,20}$/;
-const numberRegExp = /^([1-9][0-9]{0,2}|1000)$/;
 const urlRegExp = /(http|https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/;
 
-
 export function validate(input) {
-  
     let errors = {};
     if (!input.name) {
       errors.name = 'Name is required';
@@ -28,34 +23,15 @@ export function validate(input) {
       errors.image = 'Image URL invalid';
     }
 
-
-    if(!input.height){
-      errors.height = 'Height is required';
-      } else if (!numberRegExp.test(input.height)){
-      errors.height = 'Height invalid';
-    }
-
-
-    if(!input.weight){
-      errors.weight = 'Weight is required';
-      } else if (!numberRegExp.test(input.weight)){
-      errors.weight = 'Weight invalid';
-    }
-
     if(input.types.length <= 0){
       errors.types = 'Types is required';
     }
-
       
     return errors;
   };
   
-
-
-
 const FormPage = ()=> {
 
-    
     let types = useSelector(state => state.types);
     let createdPokemon = useSelector(state => state.created); 
     let error = useSelector(state => state.error);
@@ -97,13 +73,6 @@ const FormPage = ()=> {
           }
         }
 
-        if ((event.target.name === 'height') || (event.target.name === 'weight')) {
-           if (!numberRegExp.test(event.target.value) && event.target.value.length !== 0) {
-              return false;
-           }
-        }
-
-        
         setInput({
           ...input,
           [event.target.name]: event.target.value
