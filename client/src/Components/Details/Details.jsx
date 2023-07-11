@@ -13,6 +13,7 @@ export default  function Detail() {
   useEffect(() => {
     dispatch(resetDetails())
     dispatch(getPokemonById(id));
+    // eslint-disable-next-line
   }, [id]);
   return (
     <>

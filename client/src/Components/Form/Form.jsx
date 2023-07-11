@@ -1,212 +1,368 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getTypes, createPokemon } from "../../Redux/actions";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPokemon,resetCreated } from '../../Redux/actions';
+import Pokemon from '../Pokemon/Pokemon';
 import NavBar from "../NavBar/NavBar";
 
-const FormPage = () => {
-  const dispatch = useDispatch();
-  const types = useSelector((state) => state.types);
-  const created = useSelector((state) => state.created);
-  const error = useSelector((state) => state.error);
+import { useEffect } from 'react';
 
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [hp, setHp] = useState(1);
-  const [attack, setAttack] = useState(1);
-  const [defense, setDefense] = useState(1);
-  const [speed, setSpeed] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [weight, setWeight] = useState(0);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-  const [newType, setNewType] = useState("");
 
-  useEffect(() => {
-    dispatch(getTypes());
-  }, [dispatch]);
+const maxTypes = 2;
+const stringRegExp = /^[a-zA-Z]{1,20}$/;
+const numberRegExp = /^([1-9][0-9]{0,2}|1000)$/;
+const urlRegExp = /(http|https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/;
 
-  const handleTypeChange = (e) => {
-    const selectedType = e.target.value;
-    if (selectedTypes.length < 2) {
-      setSelectedTypes([...selectedTypes, selectedType]);
+
+export function validate(input) {
+  
+    let errors = {};
+    if (!input.name) {
+      errors.name = 'Name is required';
+    } else if (!stringRegExp.test(input.username)) {
+      errors.name = 'Name is invalid';
     }
-  };
-
-  const handleNewTypeChange = (e) => {
-    setNewType(e.target.value);
-  };
-
-  const handleAddNewType = () => {
-    if (newType.trim() !== "" && selectedTypes.length < 2) {
-      setSelectedTypes([...selectedTypes, newType.trim()]);
-      setNewType("");
+  
+    if(!input.image){
+      errors.image = 'Image is required';
+      } else if (!urlRegExp.test(input.image)){
+      errors.image = 'Image URL invalid';
     }
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    const newPokemon = {
-      name,
-      image,
-      hp,
-      attack,
-      defense,
-      speed,
-      height,
-      weight,
-      types: selectedTypes,
-    };
-    dispatch(createPokemon(newPokemon));
-  };
+    if(!input.height){
+      errors.height = 'Height is required';
+      } else if (!numberRegExp.test(input.height)){
+      errors.height = 'Height invalid';
+    }
 
-  const handleReset = () => {
-    setName("");
-    setImage("");
-    setHp(1);
-    setAttack(1);
-    setDefense(1);
-    setSpeed(0);
-    setHeight(0);
-    setWeight(0);
-    setSelectedTypes([]);
-    setNewType("");
+
+    if(!input.weight){
+      errors.weight = 'Weight is required';
+      } else if (!numberRegExp.test(input.weight)){
+      errors.weight = 'Weight invalid';
+    }
+
+    if(input.types.length <= 0){
+      errors.types = 'Types is required';
+    }
+
+      
+    return errors;
   };
+  
+
+
+
+const FormPage = ()=> {
+
+    
+    let types = useSelector(state => state.types);
+    let createdPokemon = useSelector(state => state.created); 
+    let error = useSelector(state => state.error);
+
+    let dispatch = useDispatch();
+  
+    const inputStateInitial = {
+      name: '',
+      image: '',
+      height: 0,
+      weight: 0,
+      hp: 0,
+      attack: 0,
+      defense: 0,
+      speed: 0,
+      types: [],
+    }
+
+    const [input, setInput] = useState(inputStateInitial);
+    
+    const [errors, setErrors] = useState({
+        name: '',
+        image: '',
+        height: '',
+        weight: '',
+        hp: '',
+        attack: '',
+        defense: '',
+        speed: '',
+        types:''
+      });
+
+
+      function handleInputChange (event) {
+     
+        if ((event.target.name === 'name')  && (event.target.value.length>1)){
+          if (!stringRegExp.test(event.target.value) ) {
+            return false;
+          }
+        }
+
+        if ((event.target.name === 'height') || (event.target.name === 'weight')) {
+           if (!numberRegExp.test(event.target.value) && event.target.value.length !== 0) {
+              return false;
+           }
+        }
+
+        
+        setInput({
+          ...input,
+          [event.target.name]: event.target.value
+        });
+    
+        setErrors(validate({
+          ...input,
+          [event.target.name]: event.target.value
+        }));
+      
+      }
+
+
+      function onChangeRange(event) {
+
+        setInput({
+          ...input,
+          [event.target.name]: event.target.value
+        });
+    
+      }
+
+
+      function onChangeTypes(event) {
+
+        // maximo de types 2
+        if (event.target.value === "0") return;
+
+          if (input.types.filter(type => (type.name === event.target.value)).length===0) {
+
+            let newType = {"name": event.target.value};
+            setInput({
+              ...input,
+              types: [...input.types, newType]
+            });
+
+            setErrors(validate({
+              ...input,
+              types: [...input.types, newType]
+            }));
+
+            
+            if (input.types.length === maxTypes-1) {
+              event.target.disabled = true;
+            }  
+          
+        }
+        event.target.value = "0";
+      }
+
+      // delete Type de la lista
+      function onClickDelete(event) {
+          let newTypes = input.types.filter(type => type.name !== event.target.value);
+          setInput({
+                ...input,
+                types: newTypes
+              });       
+
+          if (input.types.length < maxTypes+1) {
+            document.getElementById("typesSelect").disabled = false;
+          }
+
+          setErrors(validate({
+            ...input,
+            types: newTypes
+          }));
+
+      }
+
+      function onClickCreate(event) {
+        event.preventDefault();
+        
+        if (Object.keys(errors).length === 0) { 
+              dispatch(createPokemon(input));
+        } else {
+          setErrors({
+            ...errors
+          })
+        }
+      }
+
+
+    function inicializarForm(){           
+        let selectTypes = document.getElementById("typesSelect");
+        if (input.types.length<2) selectTypes.disabled = false;  
+    }       
+
+    function errorCreate(){
+      let selectTypes = document.getElementById("typesSelect");
+      let submitCreate = document.getElementById("submitCreate");
+      if (input.types.length<2) selectTypes.disabled = false;
+      submitCreate.disabled = false;                          
+        
+    }
+      
+   
+    useEffect(() => {
+      setInput(inputStateInitial);
+      inicializarForm();
+      setTimeout(()=>{dispatch(resetCreated())},2000);
+      // eslint-disable-next-line
+    },[]);
+
+
+    useEffect(() => {
+      errorCreate();
+      setTimeout(()=>{dispatch(resetCreated())},2000);
+      // eslint-disable-next-line
+    },[error]);
+
 
   return (
+  <div>
+    <NavBar />
     <div>
-      <NavBar />
-      <h1>Create a New Pokemon</h1>
-      {created && <p>Pokemon created successfully!</p>}
-      {error && <p>Error: {error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Image:
-          <input
-            type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          HP (1 - 999):
-          <input
-            type="range"
-            min={1}
-            max={999}
-            value={hp}
-            onChange={(e) => setHp(Number(e.target.value))}
-            required
-          />
-          {hp}
-        </label>
-        <br />
-        <label>
-          Attack (1 - 999):
-          <input
-            type="range"
-            min={1}
-            max={999}
-            value={attack}
-            onChange={(e) => setAttack(Number(e.target.value))}
-            required
-          />
-          {attack}
-        </label>
-        <br />
-        <label>
-          Defense (1 - 999):
-          <input
-            type="range"
-            min={1}
-            max={999}
-            value={defense}
-            onChange={(e) => setDefense(Number(e.target.value))}
-            required
-          />
-          {defense}
-        </label>
-        <br />
-        <label>
-          Speed (0 - 999):
-          <input
-            type="range"
-            min={0}
-            max={999}
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-            required
-          />
-          {speed}
-        </label>
-        <br />
-        <label>
-          Height (0 - 999):
-          <input
-            type="range"
-            min={0}
-            max={999}
-            value={height}
-            onChange={(e) => setHeight(Number(e.target.value))}
-            required
-          />
-          {height}
-        </label>
-        <br />
-        <label>
-          Weight (0 - 999):
-          <input
-            type="range"
-            min={0}
-            max={999}
-            value={weight}
-            onChange={(e) => setWeight(Number(e.target.value))}
-            required
-          />
-          {weight}
-        </label>
-        <br />
-        <label>
-          Types:
-          <select onChange={handleTypeChange}>
-            {types.map((type) => (
-              <option key={type.id} value={type.name}>
-                {type.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <br />
+    
+      {createdPokemon && (
         <div>
-          <label>New Type:</label>
-          <input
-            type="text"
-            value={newType}
-            onChange={handleNewTypeChange}
-          />
-          <button type="button" onClick={handleAddNewType}>
-            Add New Type
-          </button>
+          <span>POKEMON CREATED</span>
         </div>
-        <br />
-        <button type="submit">Create</button>
-        <button type="button" onClick={handleReset}>
-          Reset
-        </button>
-      </form>
-    </div>
-  );
-};
+      )}
 
+      {error.length > 0 && (
+        <div>
+          <span>{error}</span>
+        </div>
+      )}
+
+      {Object.keys(errors).length !== 0 && (
+        <div>
+          You must complete the form correctly before sending.
+        </div>
+      )}
+    </div>
+    <div>
+      <div>
+       
+        <div>
+          <div>
+            <label>NAME:</label>
+            <input
+              type="text"
+              name="name"
+              value={input.name}
+              onChange={handleInputChange}
+              placeholder="Pokémon Name"
+            />
+          </div>
+          <div>
+            {errors.name && <p>{errors.name}</p>}
+          </div>
+        </div>
+
+        
+        <div>
+          <div>
+            <label>IMAGE:</label>
+            <input
+              type="text"
+              name="image"
+              value={input.image}
+              onChange={handleInputChange}
+              placeholder="Link to image..."
+            />
+          </div>
+          <div>
+            {errors.image && <p>{errors.image}</p>}
+          </div>
+        </div>
+
+        
+
+       
+        <div>
+          <div>
+            <label>TYPES:</label>
+            <select defaultValue="0" id="typesSelect" onChange={onChangeTypes} name="types">
+              <option value="0">Select Types</option>
+              {types.map((type, index) => (
+                <option key={index} value={type.name}>{type.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            {input.types.map((type, index) => (
+              <div key={index}>
+                <span>{type.name}</span>
+                <button value={type.name} onClick={onClickDelete}>X</button>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div>
+            2 types maximum
+          </div>
+          <div>
+            {errors.types && errors.types}
+          </div>
+        </div>
+
+       
+        <div>
+          <form>
+            <div>
+              <span>HP</span>
+              <input type="range" defaultValue={input.hp} name="hp" onChange={onChangeRange}
+                min={0} max={999} value={input.hp} />
+              <span>{input.hp}</span>
+            </div>
+            <div>
+              <span>ATTACK</span>
+              <input type="range" defaultValue={input.attack} name="attack" onChange={onChangeRange}
+                min={0} max={999} value={input.attack} />
+              <span>{input.attack}</span>
+            </div>
+            <div>
+              <span>DEFENSE</span>
+              <input type="range" defaultValue={input.defense} name="defense" onChange={onChangeRange}
+                min={0} max={999} value={input.defense} />
+              <span>{input.defense}</span>
+            </div>
+            <div>
+              <span>SPEED</span>
+              <input type="range" defaultValue={input.speed} name="speed" onChange={onChangeRange}
+                min={0} max={999} value={input.speed} />
+              <span>{input.speed}</span>
+            </div>
+            <div>
+              <span>HEIGHT</span>
+              <input type="range" defaultValue={input.height} name="height" onChange={onChangeRange}
+                min={0} max={999} value={input.height} />
+              <span>{input.height}</span>
+            </div>
+            <div>
+              <span>WEIGHT</span>
+              <input type="range" defaultValue={input.weight} name="weight" onChange={onChangeRange}
+                min={0} max={999} value={input.weight} />
+              <span>{input.weight}</span>
+            </div>
+          </form>
+        </div>
+
+        <div>
+          <input onClick={onClickCreate} type="submit" name="submit" value="CREATE" id="submitCreate" />
+        </div>
+
+      </div>
+      <div>
+        <div>
+          <span>CARD PREVIEW</span>
+          <div>
+            <Pokemon name={input.name} image={input.image} height={input.height} weight={input.weight} hp={input.hp} attack={input.attack} defense={input.defense} speed={input.speed} types={input.types} />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+);
+}
 export default FormPage;

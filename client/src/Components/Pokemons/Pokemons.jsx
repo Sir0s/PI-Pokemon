@@ -18,11 +18,13 @@ export default function Pokemons({ pokes }) {
               image={pokemon.image}
               attack={pokemon.attack}
               types={pokemon.type}
+              typesDB={pokemon.Types}
               hp={pokemon.hp}
               defense={pokemon.defense}
               speed={pokemon.speed}
               height={pokemon.height}
               weight={pokemon.weight}
+              
             />
           </Link>
         );

@@ -2,13 +2,19 @@ import axios from "axios";
 import {
   GET_DETAILS,
   RESET_DETAILS,
+
   GET_POKEMONS,
   GET_TYPES,
+
   SEARCH_POKEMON,
   RESET_SEARCH,
+  ERROR_SEARCH,
+
   CREATE_POKEMON,
   ERROR_CREATION,
-  ERROR_SEARCH
+  RESET_CREATED,
+  
+ 
   
 } from "./action_types";
 const URL_SERVER_POKEMONS = "http://localhost:3001/pokemons";
@@ -102,5 +108,11 @@ export const createPokemon = (pokemon) =>{
       type: ERROR_CREATION,
       payload: error.message,
     })})
+  }
+}
+
+export function resetCreated(){
+  return {
+      type: RESET_CREATED,
   }
 }

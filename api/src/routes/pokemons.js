@@ -1,15 +1,19 @@
-const { getPokemonById } = require('../Controllers/getPokemonById');
+const {getPokemonById} = require('../Controllers/getPokemonById');
 const {getAllPokemons} = require('../Controllers/getAllPokemons');
-const {getPokemonFromApi,getPokemonFromDB}  = require('../Controllers/getPokemonByName.js');
+const {getPokemonFromApi , getPokemonFromDB}  = require('../Controllers/getPokemonByName.js');
 const {postPokemon} = require('../Controllers/postPokemon')
-const { Router } = require('express');
+const {Router} = require('express');
 const router = Router();
 
 
-
-
-
-
+router.get("/", async (req, res) => {
+  try {
+    const allPokemons = await getAllPokemons();
+    return res.status(200).json(allPokemons);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 router.get('/name', async (req, res, next) => {
   try {
@@ -41,25 +45,20 @@ router.get('/name', async (req, res, next) => {
       return res.status(404).json({ error: error.message });
     }
   });
+  
 
-  router.get("/", async (req, res) => {
+  router.post('/', async (req, res) => {
+    const { name, image, hp, attack, defense, speed, height, weight, types } = req.body;
+  
     try {
-      const allPokemons = await getAllPokemons();
-      return res.status(200).json(allPokemons);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  });
-
-
-  router.post("/", async (req, res) => {
-    try {
-      const { name, image, hp, attack, defense, speed, height, weight, types } = req.body;
       const newPokemon = await postPokemon(name, image, hp, attack, defense, speed, height, weight, types);
-      return res.status(200).json(newPokemon);
+      if(newPokemon !==null) {return res.status(200).json(newPokemon);}
+      else{return res.status(400).json({error: "Fallo en la creacion"})}
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
   });
 
+
+ 
 module.exports = router;

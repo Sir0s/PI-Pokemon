@@ -1,5 +1,5 @@
 const { Pokemons, Types } = require("../db");
-const { getPokemonByName } = require("./getPokemonByName");
+const { getPokemonFromApi, getPokemonFromDB } = require("./getPokemonByName");
 
 const postPokemon = async (name, image, hp, attack, defense, speed, height, weight, types) => {
   if (!name || name.trim() === "") {
@@ -14,9 +14,15 @@ const postPokemon = async (name, image, hp, attack, defense, speed, height, weig
   const formattedName = name.trim().replace(/\s+/g, " ");
 
   try {
-    let pokeSearch = await getPokemonByName(formattedName);
+    // Verificar que el nombre esté disponible.
+    let pokemonSearch = await getPokemonFromApi(formattedName);
+    
+    // Búsqueda en la base de datos
+    if (pokemonSearch === null) {
+      pokemonSearch = await getPokemonFromDB(formattedName);
+    }
 
-    if (pokeSearch.error) {
+    if (pokemonSearch) {
       throw new Error(`El nombre de Pokémon: ${formattedName} no está disponible.`);
     }
 
@@ -45,9 +51,8 @@ const postPokemon = async (name, image, hp, attack, defense, speed, height, weig
 
     return newPokemon;
   } catch (error) {
-    throw error;
+    return null;
   }
 };
 
 module.exports = { postPokemon };
-

@@ -4,7 +4,9 @@ import styles from "./Pokemon.module.css"
 export default function Pokemon(props) {
   
   return (
+    
     <div className={styles.card} key={props.id}>
+     
       <div >
         <h2 className="card-name">{props.name}</h2>
       </div>
@@ -27,10 +29,17 @@ export default function Pokemon(props) {
         <span>Weight: {props.weight}</span>
       </div>
       <div>
-        {props.types && props.types.map((type, index) => {
-            return <span key={index}>{type.name} </span>;
+        {props.types && props.types.map((types, index) => {
+            return <span key={index}>type {index+1}: {types.name} <br /> </span>; //types de la api vienen type=[{},{}]
           })}
       </div>
+      <div>
+        {props.typesDB && props.typesDB.map((types, index) => {
+            return <span key={index}>type {index+1}: {types.name} <br /> </span>; //types de la db vienen como Types=[{},{}] (tienen distinto)
+          })}
+      </div>
+      
+      
     </div>
   );
 }

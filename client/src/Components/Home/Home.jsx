@@ -42,10 +42,11 @@ export default function Home() {
             {pageNumber}
           </button>
         ))}
-        <button onClick={handleReset}>Reset</button> {/* Button to reset the search results */}
+        <button onClick={handleReset}>Reset</button> 
       </div>
       <div>
         <Pokemons pokes={currentPokemons} />
+       
       </div>
     </div>
   );

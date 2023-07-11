@@ -21,6 +21,7 @@ export default function SearchBar({ setSearchResults }) {
       dispatch(resetSearch());
     } else if (errorSearch) {
       setError('No Pokémon found');
+      dispatch(resetSearch())
     }
   }, [foundPokemon, errorSearch, dispatch, setSearchResults]);
 
