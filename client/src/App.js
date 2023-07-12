@@ -5,20 +5,13 @@ import LandingPage from './Components/Landing/LandingPage';
 import Home from './Components/Home/Home';
 import Details from './Components/Details/Details';
 import Form from './Components/Form/Form';
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getPokemons, getTypes } from "../src/Redux/actions";
+
 
 
 
 //const {pathname} = useLocation();
 function App() {
-  let dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getPokemons());
-    dispatch(getTypes());
-  }, [dispatch]);
   return (
     <div className={styles.App}>
       {/*  { {pathname !== "/" && <Nav onsearch={onSearch}/>} } */}

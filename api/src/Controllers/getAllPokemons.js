@@ -22,7 +22,8 @@ const getAllPokemons = async () => {
         speed: poke.data.stats[3].base_stat,
         height: poke.data.height,
         weight: poke.data.weight,
-        type: poke.data.types.map(tipo => ({ name: tipo.type.name }))
+        type: poke.data.types.map(tipo => ({ name: tipo.type.name })),
+        created: false,
       })
     );
 

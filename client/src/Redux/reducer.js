@@ -66,8 +66,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case ERROR_CREATION: {
       return {
         ...state,
-        error: payload,
         created: false,
+        error: payload,
       };
     }
     case CREATE_POKEMON: {

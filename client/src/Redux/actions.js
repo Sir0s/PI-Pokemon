@@ -103,10 +103,12 @@ export const createPokemon = (pokemon) =>{
       dispatch({
         type: CREATE_POKEMON,
         payload: response.data,
+        created:true,
       });
     }).catch((error) =>{dispatch({
       type: ERROR_CREATION,
       payload: error.message,
+      created:false
     })})
   }
 }
@@ -114,5 +116,6 @@ export const createPokemon = (pokemon) =>{
 export function resetCreated(){
   return {
       type: RESET_CREATED,
+      payload:false,
   }
 }

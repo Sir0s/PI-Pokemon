@@ -5,13 +5,13 @@ const URL = "https://pokeapi.co/api/v2/pokemon/";
 async function getPokemonById(id) {
   
   
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+    const isUUID = isNaN(id) ? true : false ;
     let poke;
 
     if (isUUID) {
       const dbPokemon = await Pokemons.findByPk(id, { include: { model: Types, as: "Types" } });
 
-      if (dbPokemon) {
+      
         poke = {
           id: dbPokemon.id,
           name: dbPokemon.name,
@@ -26,10 +26,8 @@ async function getPokemonById(id) {
             name: type.name,
           })),
         };
-      }
-    }
-
-    if (!poke) {
+      
+    }else{
       const response = await axios.get(URL + id);
       const data = response.data;
       poke = {
