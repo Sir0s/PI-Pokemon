@@ -5,7 +5,7 @@ import Pokemon from '../Pokemon/Pokemon';
 import NavBar from "../NavBar/NavBar";
 
 const maxTypes = 2;
-const stringRegExp = /^[a-zA-Z]{1,20}$/;
+const stringRegExp = /^[a-z]{1,20}$/;
 const urlRegExp = /(http|https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/;
 
 
@@ -14,7 +14,7 @@ export function validate(input) {
     let errors = {};
     if (!input.name) {
       errors.name = 'Name is required';
-    } else if (!stringRegExp.test(input.username)) {
+    } else if (!stringRegExp.test(input.name)) {
       errors.name = 'Name is invalid';
     }
   
@@ -53,7 +53,7 @@ const FormPage = ()=> {
       types: [],
     }
 
-    const [input, setInput] = useState(inputStateInitial);
+    let [input, setInput] = useState(inputStateInitial);
     
     const [errors, setErrors] = useState({
       name: '',
@@ -68,7 +68,8 @@ const FormPage = ()=> {
       });
 
       function handleInputChange(event) {
-        const { name, value } = event.target;     
+        const { name, value } = event.target;  
+         
         setInput({
           ...input,
           [name]: value
@@ -80,7 +81,8 @@ const FormPage = ()=> {
         const updatedErrors = validate(updatedInput);
         setErrors(updatedErrors);
         setCreateButtonDisabled(Object.keys(updatedErrors).length > 0);
-      }
+      
+    }
 
       function onChangeRange(event) {
 
@@ -142,6 +144,7 @@ const FormPage = ()=> {
         event.preventDefault();
           
           if (Object.keys(errors).length === 0) 
+         
            dispatch(createPokemon(input));
           setErrors({})
           inicializarForm();
@@ -183,7 +186,7 @@ const FormPage = ()=> {
     <div>
       <NavBar />
       <div>
-        
+    
         { error && <div><span>POKEMON CREATED</span></div>}
 
         {error.length > 0 && <div><span>{error}</span></div>}

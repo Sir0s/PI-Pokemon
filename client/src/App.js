@@ -1,19 +1,15 @@
 import React from 'react';
 import { Routes, Route  } from 'react-router-dom'
-import styles from './App.module.css'
 import LandingPage from './Components/Landing/LandingPage';
 import Home from './Components/Home/Home';
 import Details from './Components/Details/Details';
 import Form from './Components/Form/Form';
 
-
-
-
 //const {pathname} = useLocation();
 function App() {
 
   return (
-    <div className={styles.App}>
+    <div>
       {/*  { {pathname !== "/" && <Nav onsearch={onSearch}/>} } */}
       <Routes>
       <Route exact path="/" element={<LandingPage/>} />

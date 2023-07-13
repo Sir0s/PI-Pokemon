@@ -24,7 +24,7 @@ export default function Pokemons({ pokes }) {
               speed={pokemon.speed}
               height={pokemon.height}
               weight={pokemon.weight}
-              
+              created={pokemon.created}
             />
           </Link>
         );

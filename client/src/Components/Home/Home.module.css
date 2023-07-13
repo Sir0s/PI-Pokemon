@@ -1,6 +1,6 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+   
+    margin: auto;
     padding: 20px;
   }
   
@@ -14,14 +14,22 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start
+    
   }
-  
-    .pagination {
+  a:link, a:visited 
+  { text-decoration: none; 
+    color: black;
+    font-family: 'Lato', sans-serif;
+    /*font-family: 'Roboto', sans-serif;*/
+   }
+
+  .pagination {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         margin-top: 20px;
         
-    }
+  }
   
   .pageButton {
     margin: 0 5px;
