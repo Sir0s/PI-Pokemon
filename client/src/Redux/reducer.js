@@ -1,27 +1,32 @@
 import {
-  RESET_CREATED,
-  ERROR_SEARCH,
-  ERROR_CREATION,
-  CREATE_POKEMON,
-  GET_DETAILS,
-  RESET_DETAILS,
   GET_POKEMONS,
   GET_TYPES,
+  GET_DETAILS,
+  RESET_DETAILS,
   SEARCH_POKEMON,
   RESET_SEARCH,
-} from "./action_types";
+  ERROR_SEARCH,
+  CREATE_POKEMON,
+  ERROR_CREATION,
+  RESET_CREATED,
+  SET_SELECTED_TYPE,
+  SET_FILTER_OPTION,
+  SET_SORT_ORDER,
+} from './action_types';
 
 const initialState = {
   pokemons: [],
   types: [],
-  details: {},
-
+  details: [],
   found_pokemon: null,
   error_search: false,
-  error_search_message: "",
-
+  error_search_message: '',
   created: false,
-  error: "",
+  error: '',
+  selectedType: '',
+  filterOption: 'All',
+  sortOrder: '',
+ 
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -61,6 +66,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         found_pokemon: null,
         error_search: false,
+        error_search_message: '',
       };
     }
     case ERROR_CREATION: {
@@ -91,26 +97,41 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         pokemons: [...state.pokemons, newPokemon],
         created: true,
-        error: "",
+        error: '',
       };
     }
-
     case RESET_CREATED: {
       return {
         ...state,
         created: false,
-        error: "",
+        error: '',
       };
     }
-
     case ERROR_SEARCH: {
       return {
         ...state,
         error_search: true,
-        error_search_message: "Pokemon not found.",
+        error_search_message: 'Pokemon not found.',
       };
     }
-
+    case SET_SELECTED_TYPE: {
+      return {
+        ...state,
+        selectedType: payload,
+      };
+    }
+    case SET_FILTER_OPTION: {
+      return {
+        ...state,
+        filterOption: payload,
+      };
+    }
+    case SET_SORT_ORDER: {
+      return {
+        ...state,
+        sortOrder: payload,
+      };
+    }
     default:
       return state;
   }

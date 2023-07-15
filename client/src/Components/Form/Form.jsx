@@ -232,7 +232,6 @@ const FormPage = ()=> {
             <div>
               <label>TYPES:</label>
               <select
-                defaultValue="0"
                 id="typesSelect"
                 onChange={onChangeTypes}
                 name="types"
@@ -267,7 +266,6 @@ const FormPage = ()=> {
                 <span>HP</span>
                 <input
                   type="range"
-                  defaultValue={input.hp}
                   name="hp"
                   onChange={onChangeRange}
                   min={1}
@@ -280,7 +278,7 @@ const FormPage = ()=> {
                 <span>ATTACK</span>
                 <input
                   type="range"
-                  defaultValue={input.attack}
+                  
                   name="attack"
                   onChange={onChangeRange}
                   min={1}
@@ -293,7 +291,7 @@ const FormPage = ()=> {
                 <span>DEFENSE</span>
                 <input
                   type="range"
-                  defaultValue={input.defense}
+                  
                   name="defense"
                   onChange={onChangeRange}
                   min={1}
@@ -306,7 +304,7 @@ const FormPage = ()=> {
                 <span>SPEED</span>
                 <input
                   type="range"
-                  defaultValue={input.speed}
+                  
                   name="speed"
                   onChange={onChangeRange}
                   min={0}
@@ -319,7 +317,7 @@ const FormPage = ()=> {
                 <span>HEIGHT</span>
                 <input
                   type="range"
-                  defaultValue={input.height}
+                
                   name="height"
                   onChange={onChangeRange}
                   min={0}
@@ -332,7 +330,7 @@ const FormPage = ()=> {
                 <span>WEIGHT</span>
                 <input
                   type="range"
-                  defaultValue={input.weight}
+                  
                   name="weight"
                   onChange={onChangeRange}
                   min={0}

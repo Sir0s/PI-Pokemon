@@ -22,7 +22,7 @@ async function getPokemonById(id) {
           speed: dbPokemon.speed,
           height: dbPokemon.height,
           weight: dbPokemon.weight,
-          type: dbPokemon.Types.map((type) => ({
+          types: dbPokemon.Types.map((type) => ({
             name: type.name,
           })),
         };
@@ -40,7 +40,7 @@ async function getPokemonById(id) {
         speed: data.stats[3].base_stat,
         height: data.height,
         weight: data.weight,
-        type: data.types.map((tipo) => ({
+        types: data.types.map((tipo) => ({
           name: tipo.type.name,
         })),
       };

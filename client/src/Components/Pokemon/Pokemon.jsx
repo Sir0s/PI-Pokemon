@@ -6,14 +6,14 @@ export default function Pokemon(props) {
   return (
     
     <div className={styles.card} key={props.id}>
-     
+      
       <div >
         <h2 className="card-name">{props.name}</h2>
       </div>
       <div>
         <img className={styles.image} src={props.image} alt={props.name} />
       </div>
-  {/*     <div>
+       <div>
          <span>Attack: {props.attack}</span>
       </div>
       <div>
@@ -27,19 +27,13 @@ export default function Pokemon(props) {
       </div>
       <div>
         <span>Weight: {props.weight}</span>
-      </div> */}
+      </div> 
       <div>
-        {props.types && props.types.map((types, index) => {
-            return <span key={index}>type {index+1}: {types.name} <br /> </span>; //types de la api vienen type=[{},{}]
+        {props.types && props.types.map((type, index) => {
+            return <span key={index}>type {index+1}: {type} <br /> </span>; 
           })}
       </div>
-      <div>
-        {props.typesDB && props.typesDB.map((types, index) => {
-            return <span key={index}>type {index+1}: {types.name} <br /> </span>; //types de la db vienen como Types=[{},{}] (tienen distinto)
-          })}
-      </div>
-      
-      
+     
     </div>
   );
 }

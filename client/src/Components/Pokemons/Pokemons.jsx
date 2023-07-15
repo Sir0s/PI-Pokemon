@@ -17,8 +17,7 @@ export default function Pokemons({ pokes }) {
               name={pokemon.name}
               image={pokemon.image}
               attack={pokemon.attack}
-              types={pokemon.type}
-              typesDB={pokemon.Types}
+              types={pokemon.types}
               hp={pokemon.hp}
               defense={pokemon.defense}
               speed={pokemon.speed}
