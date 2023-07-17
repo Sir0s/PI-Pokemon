@@ -1,5 +1,6 @@
 .container {
-   
+    background-image: url('../../images/back_pikachu.jpg');
+    background-size: cover;
     margin: auto;
     padding: 20px;
   }

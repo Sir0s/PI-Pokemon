@@ -119,7 +119,6 @@ export const createPokemon = (pokemon) => {
 export const resetCreated = () => {
   return {
     type: RESET_CREATED,
-    payload: false,
   };
 };
 

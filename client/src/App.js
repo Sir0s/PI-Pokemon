@@ -4,12 +4,13 @@ import LandingPage from './Components/Landing/LandingPage';
 import Home from './Components/Home/Home';
 import Details from './Components/Details/Details';
 import Form from './Components/Form/Form';
+import styles from './App.module.css'
 
 //const {pathname} = useLocation();
 function App() {
 
   return (
-    <div>
+    <div className={styles.App}>
       {/*  { {pathname !== "/" && <Nav onsearch={onSearch}/>} } */}
       <Routes>
       <Route exact path="/" element={<LandingPage/>} />

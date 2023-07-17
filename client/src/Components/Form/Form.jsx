@@ -1,200 +1,177 @@
-import React, { useState,useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createPokemon,resetCreated } from '../../Redux/actions';
-import Pokemon from '../Pokemon/Pokemon';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createPokemon, resetCreated } from "../../Redux/actions";
 import NavBar from "../NavBar/NavBar";
 
 const maxTypes = 2;
-const stringRegExp = /^[a-z]{1,20}$/;
-const urlRegExp = /(http|https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/;
-
+const nameRegex = /^[a-z]{1,20}$/;
+const urlRegex =
+  /(http|https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/;
+const inputStateInitial = {
+  name: "",
+  image: "",
+  height: 0,
+  weight: 0,
+  hp: 1,
+  attack: 1,
+  defense: 1,
+  speed: 0,
+  types: [],
+};
+const errrosStateInitial = {
+  name: "",
+  image: "",
+  height: "",
+  weight: "",
+  hp: "",
+  attack: "",
+  defense: "",
+  speed: "",
+  types: [],
+};
 
 export function validate(input) {
-  
-    let errors = {};
-    if (!input.name) {
-      errors.name = 'Name is required';
-    } else if (!stringRegExp.test(input.name)) {
-      errors.name = 'Name is invalid';
-    }
-  
-    if(!input.image){
-      errors.image = 'Image is required';
-      } else if (!urlRegExp.test(input.image)){
-      errors.image = 'Image URL invalid';
-    }
+  let errors = {};
+  if (input.name.length <= 0) {
+    errors.name = "Name is required";
+  } else if (!nameRegex.test(input.name)) {
+    errors.name = "Name is invalid";
+  }
 
-    if(input.types.length <= 0){
-      errors.types = 'Types is required';
-    }
-    return errors;
-  };
-  
+  if (input.image.length <= 0) {
+    errors.image = "Image is required";
+  } else if (!urlRegex.test(input.image)) {
+    errors.image = "Image URL invalid";
+  }
 
+  if (!input.types.length) {
+    errors.types = "Types is required";
+  }
 
+  return errors;
+}
 
-const FormPage = ()=> {
+const FormPage = () => {
+  const [input, setInput] = useState(inputStateInitial);
+  const created = useSelector((state) => state.created);
+  const [createButtonDisabled, setCreateButtonDisabled] = useState(true);
+  const [errors, setErrors] = useState(errrosStateInitial);
+  let types = useSelector((state) => state.types);
+  let error = useSelector((state) => state.error);
 
-    const [createButtonDisabled, setCreateButtonDisabled] = useState(true);
-    let types = useSelector(state => state.types);
-    let error = useSelector(state => state.error);
+  let dispatch = useDispatch();
 
-    let dispatch = useDispatch();
-  
-    const inputStateInitial = {
-      name: '',
-      image: '',
-      height: 0,
-      weight: 0,
-      hp: 1,
-      attack: 1,
-      defense: 1,
-      speed: 0,
-      types: [],
-    }
+  function handleInputChange(event) {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setErrors(validate({ ...input, [name]: value }));
+    setInput({ ...input, [name]: value });
+    setCreateButtonDisabled(Object.keys(errors).length > 0);
+  }
 
-    let [input, setInput] = useState(inputStateInitial);
-    
-    const [errors, setErrors] = useState({
-      name: '',
-      image: '',
-      height: '',
-      weight: '',
-      hp: '',
-      attack: '',
-      defense: '',
-      speed: '',
-      types:''
-      });
+  function onChangeRange(event) {
+    event.preventDefault();
+    setInput({
+      ...input,
+      [event.target.name]: event.target.value,
+    });
+  }
 
-      function handleInputChange(event) {
-        const { name, value } = event.target;  
-         
-        setInput({
-          ...input,
-          [name]: value
-        });    
-        const updatedInput = {
-          ...input,
-          [name]: value
-        };      
-        const updatedErrors = validate(updatedInput);
-        setErrors(updatedErrors);
-        setCreateButtonDisabled(Object.keys(updatedErrors).length > 0);
-      
-    }
+  function onChangeTypes(event) {
+    event.preventDefault();
+    if (event.target.value === "0") return;
 
-      function onChangeRange(event) {
+    const selectedType = event.target.value;
 
-        setInput({
-          ...input,
-          [event.target.name]: event.target.value
-        });
-    
+    if (!input.types.includes(selectedType)) {
+      setInput((prevState) => ({
+        ...prevState,
+        types: [...prevState.types, selectedType],
+      }));
+
+      if (input.types.length === maxTypes - 1) {
+        event.target.disabled = true;
       }
-
-
-      function onChangeTypes(event) {
-
-        
-        if (event.target.value === "0") return;
-
-          if (input.types.filter(type => (type.name === event.target.value)).length===0) {
-
-            let newType = {"name": event.target.value};
-            setInput({
-              ...input,
-              types: [...input.types, newType]
-            });
-
-            setErrors(validate({
-              ...input,
-              types: [...input.types, newType]
-            }));
-
-            
-            if (input.types.length === maxTypes-1) {
-              event.target.disabled = true;
-            }  
-          
-        }
-        event.target.value = "0";
-      }
-
-     
-      function onClickDelete(event) {
-          let newTypes = input.types.filter(type => type.name !== event.target.value);
-          setInput({
-                ...input,
-                types: newTypes
-              });       
-
-          if (input.types.length < maxTypes+1) {
-            document.getElementById("typesSelect").disabled = false;
-          }
-
-          setErrors(validate({
-            ...input,
-            types: newTypes
-          }));
-
-      }
-
-       function onClickCreate(event) {
-        event.preventDefault();
-          
-          if (Object.keys(errors).length === 0) 
-         
-           dispatch(createPokemon(input));
-          setErrors({})
-          inicializarForm();
-          setInput(inputStateInitial)
-        
-      }
-
-
-    function inicializarForm(){           
-        let selectTypes = document.getElementById("typesSelect");
-        if (input.types.length<2) selectTypes.disabled = false;  
-    }       
-
-    function errorCreate(){
-      let selectTypes = document.getElementById("typesSelect");
-      
-      if (input.types.length<2) selectTypes.disabled = false;
-                             
-        
     }
-      
-   
-    useEffect(() => {
-      setInput(inputStateInitial);
-      inicializarForm();
-      setTimeout(()=>{dispatch(resetCreated())},5000);
-      // eslint-disable-next-line
-    },[]);
 
+    event.target.value = "0";
+  }
 
-    useEffect(() => {
-      errorCreate();
-      setTimeout(()=>{dispatch(resetCreated())},5000);
-      // eslint-disable-next-line
-    },[error]);
+  function onClickDelete(event) {
+    event.preventDefault();
+    const typeToRemove = event.target.value;
+    const newTypes = input.types.filter((type) => type !== typeToRemove);
+    setInput({
+      ...input,
+      types: newTypes,
+    });
 
+    if (input.types.length < maxTypes) {
+      document.getElementById("typesSelect").disabled = false;
+    }
+
+    setErrors(
+      validate({
+        ...input,
+        types: newTypes,
+      })
+    );
+  }
+
+  function onClickCreate(event) {
+    event.preventDefault();
+
+    if (Object.keys(errors).length === 0) {
+      dispatch(createPokemon(input));
+    }
+  }
+
+  function inicializarForm() {
+    let selectTypes = document.getElementById("typesSelect");
+    if (input.types.length < 2) selectTypes.disabled = false;
+  }
+
+  function errorCreate() {
+    let selectTypes = document.getElementById("typesSelect");
+
+    if (input.types.length < 2) selectTypes.disabled = false;
+  }
+
+  useEffect(() => {
+    setInput(inputStateInitial);
+    inicializarForm();
+    setTimeout(() => {
+      dispatch(resetCreated());
+    }, 7000);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    errorCreate();
+    setTimeout(() => {
+      dispatch(resetCreated());
+    }, 7000);
+    // eslint-disable-next-line
+  }, [errors]);
 
   return (
     <div>
       <NavBar />
       <div>
-    
-        { error && <div><span>POKEMON CREATED</span></div>}
-
-        {error.length > 0 && <div><span>{error}</span></div>}
-        {
-          
+        {created && (
           <div>
-            {Object.keys(errors).length !== 0 &&
-              "Completa el formulario."}
+            <span>POKEMON CREATED</span>
+          </div>
+        )}
+        {!errors && error && (
+          <div>
+            <span>{error}</span>
+          </div>
+        )}
+
+        {
+          <div>
+            {Object.keys(errors).length !== 0 && "Completa el formulario."}
           </div>
         }
       </div>
@@ -231,15 +208,11 @@ const FormPage = ()=> {
           <div>
             <div>
               <label>TYPES:</label>
-              <select
-                id="typesSelect"
-                onChange={onChangeTypes}
-                name="types"
-              >
+              <select id="typesSelect" onChange={onChangeTypes} name="types">
                 <option value="0">Select Types</option>
-                {types.map((type, index) => (
-                  <option key={index} value={type.name}>
-                    {type.name}
+                {types.map((types, index) => (
+                  <option key={index} value={types.name}>
+                    {types.name}
                   </option>
                 ))}
               </select>
@@ -247,8 +220,8 @@ const FormPage = ()=> {
             <div>
               {input.types.map((type, index) => (
                 <div key={index}>
-                  <span>{type.name}</span>
-                  <button value={type.name} onClick={onClickDelete}>
+                  <span>{type}</span>
+                  <button value={type} onClick={onClickDelete}>
                     X
                   </button>
                 </div>
@@ -278,7 +251,6 @@ const FormPage = ()=> {
                 <span>ATTACK</span>
                 <input
                   type="range"
-                  
                   name="attack"
                   onChange={onChangeRange}
                   min={1}
@@ -291,7 +263,6 @@ const FormPage = ()=> {
                 <span>DEFENSE</span>
                 <input
                   type="range"
-                  
                   name="defense"
                   onChange={onChangeRange}
                   min={1}
@@ -304,7 +275,6 @@ const FormPage = ()=> {
                 <span>SPEED</span>
                 <input
                   type="range"
-                  
                   name="speed"
                   onChange={onChangeRange}
                   min={0}
@@ -317,7 +287,6 @@ const FormPage = ()=> {
                 <span>HEIGHT</span>
                 <input
                   type="range"
-                
                   name="height"
                   onChange={onChangeRange}
                   min={0}
@@ -330,7 +299,6 @@ const FormPage = ()=> {
                 <span>WEIGHT</span>
                 <input
                   type="range"
-                  
                   name="weight"
                   onChange={onChangeRange}
                   min={0}
@@ -340,38 +308,62 @@ const FormPage = ()=> {
                 <span>{input.weight}</span>
               </div>
               <div>
-            <input
-              onClick={onClickCreate}
-              type="submit"
-              name="submit"
-              value="CREATE"
-              id="submitCreate"
-              disabled={createButtonDisabled}
-            />
-          </div>
+                <input
+                  onClick={onClickCreate}
+                  type="submit"
+                  name="submit"
+                  value="CREATE"
+                  id="submitCreate"
+                  disabled={createButtonDisabled}
+                />
+              </div>
             </form>
           </div>
         </div>
         <div>
           <div>
-            <span>CARD PREVIEW</span>
             <div>
-              <Pokemon
-                name={input.name}
-                image={input.image}
-                height={input.height}
-                weight={input.weight}
-                hp={input.hp}
-                attack={input.attack}
-                defense={input.defense}
-                speed={input.speed}
-                types={input.types}
-              />
+              <span>CARD PREVIEW</span>
+              <div>
+                <div>
+                  <div>
+                    <h2>{input.name}</h2>
+                  </div>
+                  <div>
+                    <img src={input.image} alt={input.name} />
+                  </div>
+                  <div>
+                    <span>Attack: {input.attack}</span>
+                  </div>
+                  <div>
+                    <span>Defense: {input.defense}</span>
+                  </div>
+                  <div>
+                    <span>HP: {input.hp}</span>
+                  </div>
+                  <div>
+                    <span>Height: {input.height}</span>
+                  </div>
+                  <div>
+                    <span>Weight: {input.weight}</span>
+                  </div>
+                  <div>
+                    {input.types &&
+                      input.types.map((type, index) => {
+                        return (
+                          <span key={index}>
+                            Type {index + 1}: {type} <br />
+                          </span>
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 export default FormPage;

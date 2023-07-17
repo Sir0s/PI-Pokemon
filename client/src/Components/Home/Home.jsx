@@ -11,6 +11,7 @@ import NavBar from '../NavBar/NavBar';
 import SearchBar from '../SearchBar/SearchBar';
 import styles from './Home.module.css';
 
+
 export default function Home() {
   const dispatch = useDispatch();
 
@@ -118,7 +119,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Home</h1>
+      <h1 className={styles.title}>Pokemon</h1>
       <NavBar />
       <div>
         <SearchBar setSearchResults={handleSearchResults} />

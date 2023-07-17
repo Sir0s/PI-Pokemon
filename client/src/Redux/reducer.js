@@ -26,7 +26,6 @@ const initialState = {
   selectedType: '',
   filterOption: 'All',
   sortOrder: '',
- 
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -76,13 +75,12 @@ const rootReducer = (state = initialState, { type, payload }) => {
         error: payload,
       };
     }
+    
     case CREATE_POKEMON: {
       const { id, name, image, types, attack, defense, speed, hp } = payload;
-      let mappedTypes = types.map((type) => {
-        return { name: type.name };
-      });
-
-      let newPokemon = {
+      const mappedTypes = Array.isArray(types) ? types.map((type) => type.name) : [];
+      
+      const newPokemon = {
         id,
         name,
         image,
@@ -92,7 +90,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
         speed,
         hp,
       };
-
+    
       return {
         ...state,
         pokemons: [...state.pokemons, newPokemon],
@@ -100,6 +98,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
         error: '',
       };
     }
+
     case RESET_CREATED: {
       return {
         ...state,

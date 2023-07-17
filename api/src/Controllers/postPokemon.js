@@ -39,11 +39,13 @@ const postPokemon = async (name, image, hp, attack, defense, speed, height, weig
 
     if (newPokemon && types && Array.isArray(types)) {
       const promisesTypes = types.map(async (tipo) => {
-        let type = await Types.findAll({
-          where: { name: tipo.name },
+        let type = await Types.findOne({
+          where: { name: tipo },
         });
 
-        return newPokemon.setTypes(type);
+        if (type) {
+          return newPokemon.addType(type);
+        }
       });
 
       await Promise.all(promisesTypes);
