@@ -1,0 +1,94 @@
+/* Details.module.css */
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  background-image: url('../../images/background.jpg');
+  background-size: cover;
+  height: 100vh;
+}
+
+header {
+  text-align: center;
+  padding: 10px;
+}
+
+.backButton {
+  margin-top: 20px;
+}
+
+.Detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.cardName {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.image {
+  width: 600px;
+  height: 400px;
+  
+}
+
+.Detail span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.Detail span:not(:last-child) {
+  margin-right: 15px;
+}
+
+.Detail span br {
+  display: none;
+}
+
+.Detail span br::before {
+  content: " | ";
+}
+
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.statsRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.statsRow span {
+  margin: 5px 20px;
+}
+
+.typesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.type {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 10px;
+}

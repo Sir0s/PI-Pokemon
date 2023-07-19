@@ -1,0 +1,40 @@
+.container{
+  background-image: url('../../images/background.jpg');
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid black;
+  height: 90vh;
+  max-height: 90vh;
+
+}
+.form_title{
+  color: red;
+}
+.formContainer{
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+  margin-left: 15%;
+}
+.cardPreviewContainer{
+  border: 1px solid black;
+  display: flex;;
+  flex-wrap: wrap;
+  position: absolute;
+  margin-left: 50%;
+  margin-top: 8%;
+}
+label{
+  color:black;
+}
+
+.inputContainer{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.input{
+  color: black;
+}

@@ -9,10 +9,10 @@
       <div className={styles.card}>
         <div className={styles.card2}>
         <div>
-          <h2>{name}</h2>
+          <h2 key={name}>{name}</h2>
         </div>
         <div>
-          <img className={styles.image} key={image} src={image} alt={name} />
+          <img className={styles.image} src={image} alt={name} />
         </div>
         {/* <div>
           <span>Attack: {attack}</span>

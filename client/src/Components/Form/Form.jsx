@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPokemon, resetCreated } from "../../Redux/actions";
 import NavBar from "../NavBar/NavBar";
+import styles from "./Form.module.css";
 
 const maxTypes = 2;
 const nameRegex = /^[a-z]{1,20}$/;
@@ -150,214 +151,229 @@ const FormPage = () => {
     errorCreate();
     setTimeout(() => {
       dispatch(resetCreated());
-    }, 7000);
+    }, 5000);
     // eslint-disable-next-line
   }, [errors]);
 
   return (
     <div>
       <NavBar />
-      <div>
-        {created && (
-          <div>
-            <span>POKEMON CREATED</span>
-          </div>
-        )}
-        {!errors && error && (
-          <div>
-            <span>{error}</span>
-          </div>
-        )}
 
-        {
-          <div>
-            {Object.keys(errors).length !== 0 && "Completa el formulario."}
-          </div>
-        }
-      </div>
-      <div>
+      <div className={styles.container}>
         <div>
-          <div>
+          {created && (
             <div>
-              <label>NAME:</label>
-              <input
-                type="text"
-                name="name"
-                value={input.name}
-                onChange={handleInputChange}
-                placeholder="Pokémon Name"
-              />
+              <span>POKEMON CREATED</span>
             </div>
-            <div>{errors.name && <p>{errors.name}</p>}</div>
-          </div>
+          )}
+          {!errors && error && (
+            <div>
+              <span>{error}</span>
+            </div>
+          )}
 
-          <div>
-            <div>
-              <label>IMAGE:</label>
-              <input
-                type="text"
-                name="image"
-                value={input.image}
-                onChange={handleInputChange}
-                placeholder="Link to image..."
-              />
-            </div>
-            <div>{errors.image && <p>{errors.image}</p>}</div>
-          </div>
-
-          <div>
-            <div>
-              <label>TYPES:</label>
-              <select id="typesSelect" onChange={onChangeTypes} name="types">
-                <option value="0">Select Types</option>
-                {types.map((types, index) => (
-                  <option key={index} value={types.name}>
-                    {types.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              {input.types.map((type, index) => (
-                <div key={index}>
-                  <span>{type}</span>
-                  <button value={type} onClick={onClickDelete}>
-                    X
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div>2 types maximum</div>
-            <div>{errors.types && errors.types}</div>
-          </div>
-
-          <div>
-            <form>
-              <div>
-                <span>HP</span>
-                <input
-                  type="range"
-                  name="hp"
-                  onChange={onChangeRange}
-                  min={1}
-                  max={999}
-                  value={input.hp}
-                />
-                <span>{input.hp}</span>
-              </div>
-              <div>
-                <span>ATTACK</span>
-                <input
-                  type="range"
-                  name="attack"
-                  onChange={onChangeRange}
-                  min={1}
-                  max={999}
-                  value={input.attack}
-                />
-                <span>{input.attack}</span>
-              </div>
-              <div>
-                <span>DEFENSE</span>
-                <input
-                  type="range"
-                  name="defense"
-                  onChange={onChangeRange}
-                  min={1}
-                  max={999}
-                  value={input.defense}
-                />
-                <span>{input.defense}</span>
-              </div>
-              <div>
-                <span>SPEED</span>
-                <input
-                  type="range"
-                  name="speed"
-                  onChange={onChangeRange}
-                  min={0}
-                  max={999}
-                  value={input.speed}
-                />
-                <span>{input.speed}</span>
-              </div>
-              <div>
-                <span>HEIGHT</span>
-                <input
-                  type="range"
-                  name="height"
-                  onChange={onChangeRange}
-                  min={0}
-                  max={999}
-                  value={input.height}
-                />
-                <span>{input.height}</span>
-              </div>
-              <div>
-                <span>WEIGHT</span>
-                <input
-                  type="range"
-                  name="weight"
-                  onChange={onChangeRange}
-                  min={0}
-                  max={999}
-                  value={input.weight}
-                />
-                <span>{input.weight}</span>
-              </div>
-              <div>
-                <input
-                  onClick={onClickCreate}
-                  type="submit"
-                  name="submit"
-                  value="CREATE"
-                  id="submitCreate"
-                  disabled={createButtonDisabled}
-                />
-              </div>
-            </form>
-          </div>
+          {
+            <h2 className={styles.form_title}>
+              {Object.keys(errors).length !== 0 && "Crea tu propio pokemon."}
+            </h2>
+          }
         </div>
-        <div>
-          <div>
+
+        <div className={styles.formContainer}>
+          <form autoComplete="off">
             <div>
-              <span>CARD PREVIEW</span>
+              <div>
+                <div className={styles.inputContainer}>
+                  <label className={styles.label}>NAME:</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={input.name}
+                    onChange={handleInputChange}
+                    placeholder="Pokémon Name"
+                    className={styles.input}
+                  />
+                </div>
+                <div>{errors.name && <p>{errors.name}</p>}</div>
+              </div>
+
               <div>
                 <div>
-                  <div>
-                    <h2>{input.name}</h2>
-                  </div>
-                  <div>
-                    <img src={input.image} alt={input.name} />
-                  </div>
-                  <div>
-                    <span>Attack: {input.attack}</span>
-                  </div>
-                  <div>
-                    <span>Defense: {input.defense}</span>
-                  </div>
-                  <div>
-                    <span>HP: {input.hp}</span>
-                  </div>
-                  <div>
-                    <span>Height: {input.height}</span>
-                  </div>
-                  <div>
-                    <span>Weight: {input.weight}</span>
-                  </div>
-                  <div>
-                    {input.types &&
-                      input.types.map((type, index) => {
-                        return (
-                          <span key={index}>
-                            Type {index + 1}: {type} <br />
-                          </span>
-                        );
-                      })}
-                  </div>
+                  <label>IMAGE:</label>
+                  <input
+                    type="text"
+                    name="image"
+                    value={input.image}
+                    onChange={handleInputChange}
+                    placeholder="Link to image..."
+                    className={styles.input}
+                  />
                 </div>
+                <div>{errors.image && <p>{errors.image}</p>}</div>
+              </div>
+
+              <div>
+                <div>
+                  <label>TYPES:</label>
+                  <select
+                    className={styles.input}
+                    id="typesSelect"
+                    onChange={onChangeTypes}
+                    name="types"
+                  >
+                    <option value="0">Select Types</option>
+                    {types.map((types, index) => (
+                      <option key={index} value={types.name}>
+                        {types.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  {input.types.map((type, index) => (
+                    <div key={index}>
+                      <span>{type}</span>
+                      <button value={type} onClick={onClickDelete}>
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div>2 types maximum</div>
+                <div>{errors.types && errors.types}</div>
+              </div>
+
+              <div>
+                <div>
+                  <span>HP</span>
+                  <input
+                    type="range"
+                    name="hp"
+                    onChange={onChangeRange}
+                    min={1}
+                    max={999}
+                    value={input.hp}
+                    className={styles.input}
+                  />
+                  <span>{input.hp}</span>
+                </div>
+                <div>
+                  <span>ATTACK</span>
+                  <input
+                    type="range"
+                    name="attack"
+                    onChange={onChangeRange}
+                    min={1}
+                    max={999}
+                    value={input.attack}
+                    className={styles.input}
+                  />
+                  <span>{input.attack}</span>
+                </div>
+                <div>
+                  <span>DEFENSE</span>
+                  <input
+                    type="range"
+                    name="defense"
+                    onChange={onChangeRange}
+                    min={1}
+                    max={999}
+                    value={input.defense}
+                    className={styles.input}
+                  />
+                  <span>{input.defense}</span>
+                </div>
+                <div>
+                  <span>SPEED</span>
+                  <input
+                    type="range"
+                    name="speed"
+                    onChange={onChangeRange}
+                    min={0}
+                    max={999}
+                    value={input.speed}
+                    className={styles.input}
+                  />
+                  <span>{input.speed}</span>
+                </div>
+                <div>
+                  <span>HEIGHT</span>
+                  <input
+                    type="range"
+                    name="height"
+                    onChange={onChangeRange}
+                    min={0}
+                    max={999}
+                    value={input.height}
+                    className={styles.input}
+                  />
+                  <span>{input.height}</span>
+                </div>
+                <div>
+                  <span>WEIGHT</span>
+                  <input
+                    type="range"
+                    name="weight"
+                    onChange={onChangeRange}
+                    min={0}
+                    max={999}
+                    value={input.weight}
+                    className={styles.input}
+                  />
+                  <span>{input.weight}</span>
+                </div>
+                <div>
+                  <input
+                    onClick={onClickCreate}
+                    type="submit"
+                    name="submit"
+                    value="CREATE"
+                    id="submitCreate"
+                    disabled={createButtonDisabled}
+                    className={styles.input}
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div className={styles.cardPreviewContainer}>
+          <span>PREVIEW</span>
+          <div>
+            <div>
+              <div>
+                <h2>{input.name}</h2>
+              </div>
+              <div>
+                <img src={input.image} alt={input.name} />
+              </div>
+              <div>
+                <span>Attack: {input.attack}</span>
+              </div>
+              <div>
+                <span>Defense: {input.defense}</span>
+              </div>
+              <div>
+                <span>HP: {input.hp}</span>
+              </div>
+              <div>
+                <span>Height: {input.height}</span>
+              </div>
+              <div>
+                <span>Weight: {input.weight}</span>
+              </div>
+              <div>
+                {input.types &&
+                  input.types.map((type, index) => {
+                    return (
+                      <span key={index}>
+                        Type {index + 1}: {type} <br />
+                      </span>
+                    );
+                  })}
               </div>
             </div>
           </div>

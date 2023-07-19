@@ -23,7 +23,6 @@ async function getPokemonFromApi(name) {
         name: tipo.type.name,
       })),
     };
-
     return poke;
   } catch (error) {
    return null
@@ -36,12 +35,12 @@ async function getPokemonFromDB(name) {
       where: {name : name.toLowerCase()},
       include: { model: Types, as: "Types" }
     });
+   
     return searchDB
+    
   } catch (error) {
    return null
   }
 }
-
-
 
 module.exports = { getPokemonFromApi,getPokemonFromDB };

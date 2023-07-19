@@ -69,15 +69,53 @@ export const resetDetails = () => {
     type: RESET_DETAILS,
   };
 };
+// normalizar los datos del req.query name
+function normalizePokemonData(data) {
+  if (data.Types) {
+    
+    const types = data.Types.map((type) => type.name);
 
+    return {
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      hp: data.hp,
+      attack: data.attack,
+      defense: data.defense,
+      speed: data.speed,
+      height: data.height,
+      weight: data.weight,
+      types: types,
+    };
+  } else {
+    
+    const types = data.type.map((type) => type.name);
+
+    return {
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      hp: data.hp,
+      attack: data.attack,
+      defense: data.defense,
+      speed: data.speed,
+      height: data.height,
+      weight: data.weight,
+      types: types,
+    };
+  }
+}
 export function searchPokemon(search) {
   return function (dispatch) {
     axios
       .get(`${URL_SERVER_POKEMONS}/name?name=${search}`)
       .then((response) => {
+        const data = response.data;
+        const foundPokemon = normalizePokemonData(data);
+
         dispatch({
           type: SEARCH_POKEMON,
-          payload: response.data,
+          payload: foundPokemon,
         });
       })
       .catch((error) => {
@@ -88,6 +126,7 @@ export function searchPokemon(search) {
       });
   };
 }
+
 
 export const resetSearch = () => {
   return {

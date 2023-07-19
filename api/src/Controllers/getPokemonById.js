@@ -4,14 +4,12 @@ const URL = "https://pokeapi.co/api/v2/pokemon/";
 
 async function getPokemonById(id) {
   
-  
-    const isUUID = isNaN(id) ? true : false ;
+  try {
+    const isUUID = isNaN(id) ;
     let poke;
 
     if (isUUID) {
       const dbPokemon = await Pokemons.findByPk(id, { include: { model: Types, as: "Types" } });
-
-      
         poke = {
           id: dbPokemon.id,
           name: dbPokemon.name,
@@ -45,9 +43,11 @@ async function getPokemonById(id) {
         })),
       };
     }
-
-    return poke;
-  
+      return poke;
+    
+  } catch (error) {
+    return error.message
+  }
 }
 
 module.exports = { getPokemonById };

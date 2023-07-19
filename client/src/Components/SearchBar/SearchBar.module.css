@@ -1,0 +1,6 @@
+.searchbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-block-size: content;
+}
