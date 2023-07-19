@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-
+import styles from "./LandingPage.module.css"
   export default function LandingPage() {
   return (
-    <div>
+    <div className={styles.container}>
       <div>
-        <h1>Pokemon Page</h1>
+        
       </div>
-      <div>
+      <div className={styles.enter}>
         <Link to="/pokemons">
-          <button>Enter</button>
+          <button className={styles.button}>Enter</button>
         </Link>
       </div>
     </div>

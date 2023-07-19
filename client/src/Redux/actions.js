@@ -69,8 +69,9 @@ export const resetDetails = () => {
     type: RESET_DETAILS,
   };
 };
-// normalizar los datos del req.query name
-function normalizePokemonData(data) {
+
+// normalizar los datos del req.query name para la searchBar
+function normalizeData(data) {
   if (data.Types) {
     
     const types = data.Types.map((type) => type.name);
@@ -111,7 +112,7 @@ export function searchPokemon(search) {
       .get(`${URL_SERVER_POKEMONS}/name?name=${search}`)
       .then((response) => {
         const data = response.data;
-        const foundPokemon = normalizePokemonData(data);
+        const foundPokemon = normalizeData(data);
 
         dispatch({
           type: SEARCH_POKEMON,
