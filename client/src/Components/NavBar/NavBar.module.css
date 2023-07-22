@@ -1,16 +1,59 @@
+/* NavBar.module.css */
 
-.NavBar_container{
-    border: 1px solid black;
+.navbar {
+    background-color: #ff0000;
+    color: black;
+    padding: 10px;
+  }
+  
+  .navbar_container {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-top: 20px;
-    background-color: red
-}
-
-.links{
-    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .links {
+    display: flex;
+  }
+  
+  .list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+  }
+  
+  .list li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .list li a {
+    text-decoration: none;
+    display: block;
+    color: black;
+    box-shadow: 0 0 0 1 solid black;
+  }
+  
+  .list li a:hover {
+    background-color: yellow;
+    border-radius: 5px;
+  }
+  
+  .list li button {
+    background: none;
     
-
-}
+    color: black;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+  
+  .list li button:hover {
+    background-color: yellow;
+    border: 1px solid yellow; 
+    border-radius: 5px;
+  }
+  

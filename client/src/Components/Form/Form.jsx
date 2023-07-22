@@ -23,7 +23,7 @@ const errrosStateInitial = {
   name: "",
   image: "",
   height: "",
-  weight: "",
+  weight: "", 
   hp: "",
   attack: "",
   defense: "",
@@ -143,7 +143,7 @@ const FormPage = () => {
     inicializarForm();
     setTimeout(() => {
       dispatch(resetCreated());
-    }, 7000);
+    }, 5000);
     // eslint-disable-next-line
   }, []);
 
@@ -151,7 +151,7 @@ const FormPage = () => {
     errorCreate();
     setTimeout(() => {
       dispatch(resetCreated());
-    }, 5000);
+    }, 1000);
     // eslint-disable-next-line
   }, [errors]);
 
@@ -166,9 +166,9 @@ const FormPage = () => {
               <span>POKEMON CREATED</span>
             </div>
           )}
-          {!errors && error && (
+          {errors && error && (
             <div>
-              <span>{error}</span>
+              <span>{"Creation Failed Pokemon Name already exists" || errors}</span>
             </div>
           )}
 
