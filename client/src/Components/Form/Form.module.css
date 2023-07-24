@@ -1,40 +1,165 @@
-.container{
-  background-image: url('../../images/background.jpg');
+.container {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   border: 2px solid black;
-  height: 90vh;
-  max-height: 90vh;
+  height: 100vh;
+  background-image: url('../../images/back_pikachu.jpg');
+  background-size: cover;
+  padding: 10px;
+}
 
+.form_title {
+  color: rgb(170, 5, 5);
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
 }
-.form_title{
-  color: red;
-}
-.formContainer{
+
+.formContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 3%;
-  margin-left: 15%;
-}
-.cardPreviewContainer{
-  border: 1px solid black;
-  display: flex;;
-  flex-wrap: wrap;
-  position: absolute;
-  margin-left: 50%;
-  margin-top: 8%;
-}
-label{
-  color:black;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
 }
 
-.inputContainer{
-  margin-top: 10px;
+.formContainer form {
+  width: 100%;
+}
+
+.formContainer > div {
+  margin-bottom: 20px;
+}
+
+label {
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.inputContainer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  height: 40px;
+  width: 100%;
+  outline: none;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 2px 2px 12px inset black;
+  background: linear-gradient(to right, rgb(248, 234, 32), rgb(39, 40, 46));
+  color: rgb(6, 6, 6);
+}
+
+#typesSelect {
+  margin-top: 8px;
+  padding: 10px;
+}
+
+#submitCreate {
+  margin-top: 25px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  border: none;
+  padding: 8px 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: grey;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  background: linear-gradient(to right, rgb(248, 234, 32), rgb(39, 40, 46));
+}
+
+#submitCreate:hover {
+  box-shadow: 2px 2px 12px white;
+  background: linear-gradient(to right, rgb(39, 40, 46), rgb(248, 234, 32));
+  color: black;
+}
+
+#submitCreate:disabled {
+  background-color: #ddd; 
+  cursor: not-allowed;
+  color: #777; 
+  box-shadow: none; 
+}
+
+.cardPreviewContainer {
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  padding: 10px;
+  background: linear-gradient(to right, rgb(248, 234, 32), rgb(39, 40, 46));
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  width: 50%;
+  max-width: 450px;
+}
+
+.cardPreviewContainer > div {
+  width: 100%;
+}
+
+.cardPreviewContainer span {
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.cardPreviewContainer img {
+  max-width: 100%;
+  height: auto;
   margin-bottom: 10px;
 }
 
-.input{
-  color: black;
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.success-message {
+  color: rgb(128, 17, 0);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.button {
+  height: 50px;
+  width: 80%;
+  margin-left: 10%;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  background: yellow;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .formContainer {
+    width: 45%;
+    margin-top: 0;
+  }
+
+  .cardPreviewContainer {
+    margin-top: 0;
+  }
 }

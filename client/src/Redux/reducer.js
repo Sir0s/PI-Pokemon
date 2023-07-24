@@ -12,6 +12,7 @@ import {
   SET_SELECTED_TYPE,
   SET_FILTER_OPTION,
   SET_SORT_ORDER,
+  SET_LOADING,
 } from './action_types';
 
 const initialState = {
@@ -26,6 +27,7 @@ const initialState = {
   selectedType: '',
   filterOption: 'All',
   sortOrder: '',
+  loading: false,
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -34,6 +36,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         pokemons: payload,
+        loading: false,
       };
     }
     case GET_TYPES: {
@@ -52,6 +55,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         details: payload,
+        loading: false
       };
     }
     case SEARCH_POKEMON: {
@@ -130,6 +134,13 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         sortOrder: payload,
       };
+    }
+    case SET_LOADING:{
+      return{
+        ...state,
+        loading: payload,
+      }
+
     }
     default:
       return state;

@@ -1,15 +1,18 @@
-/* NavBar.module.css */
 
 .navbar {
     background-color: #ff0000;
     color: black;
     padding: 10px;
+    background-image: url('../../images/logo.jpg.png');
+    background-repeat: no-repeat;
+    background-size: contain;
   }
   
   .navbar_container {
     display: flex;
     justify-content: center;
     font-family: 'Roboto', sans-serif;
+  
   }
   
   .links {

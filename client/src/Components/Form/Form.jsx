@@ -155,11 +155,19 @@ const FormPage = () => {
     // eslint-disable-next-line
   }, [errors]);
 
+  useEffect(() => {
+    setErrors(validate(inputStateInitial));
+  }, []);
+
+
   return (
     <div>
       <NavBar />
 
       <div className={styles.container}>
+        
+
+        <div className={styles.formContainer}>
         <div>
           {created && (
             <div>
@@ -172,14 +180,13 @@ const FormPage = () => {
             </div>
           )}
 
-          {
+        
+        </div>
+        {
             <h2 className={styles.form_title}>
               {Object.keys(errors).length !== 0 && "Crea tu propio pokemon."}
             </h2>
           }
-        </div>
-
-        <div className={styles.formContainer}>
           <form autoComplete="off">
             <div>
               <div>
@@ -220,6 +227,7 @@ const FormPage = () => {
                     id="typesSelect"
                     onChange={onChangeTypes}
                     name="types"
+
                   >
                     <option value="0">Select Types</option>
                     {types.map((types, index) => (
@@ -245,21 +253,22 @@ const FormPage = () => {
                 <div>{errors.types && errors.types}</div>
               </div>
 
-              <div>
-                <div>
+              <div >
+                <div  className={styles.input}> 
                   <span>HP</span>
                   <input
+                   
                     type="range"
                     name="hp"
                     onChange={onChangeRange}
                     min={1}
                     max={999}
                     value={input.hp}
-                    className={styles.input}
+                    
                   />
                   <span>{input.hp}</span>
                 </div>
-                <div>
+                <div  className={styles.input}>
                   <span>ATTACK</span>
                   <input
                     type="range"
@@ -268,11 +277,11 @@ const FormPage = () => {
                     min={1}
                     max={999}
                     value={input.attack}
-                    className={styles.input}
+                   
                   />
                   <span>{input.attack}</span>
                 </div>
-                <div>
+                <div  className={styles.input}>
                   <span>DEFENSE</span>
                   <input
                     type="range"
@@ -281,11 +290,11 @@ const FormPage = () => {
                     min={1}
                     max={999}
                     value={input.defense}
-                    className={styles.input}
+                   
                   />
                   <span>{input.defense}</span>
                 </div>
-                <div>
+                <div  className={styles.input}>
                   <span>SPEED</span>
                   <input
                     type="range"
@@ -294,11 +303,11 @@ const FormPage = () => {
                     min={0}
                     max={999}
                     value={input.speed}
-                    className={styles.input}
+                    
                   />
                   <span>{input.speed}</span>
                 </div>
-                <div>
+                <div  className={styles.input}>
                   <span>HEIGHT</span>
                   <input
                     type="range"
@@ -307,11 +316,11 @@ const FormPage = () => {
                     min={0}
                     max={999}
                     value={input.height}
-                    className={styles.input}
+                   
                   />
                   <span>{input.height}</span>
                 </div>
-                <div>
+                <div  className={styles.input}>
                   <span>WEIGHT</span>
                   <input
                     type="range"
@@ -320,11 +329,11 @@ const FormPage = () => {
                     min={0}
                     max={999}
                     value={input.weight}
-                    className={styles.input}
+                   
                   />
                   <span>{input.weight}</span>
                 </div>
-                <div>
+                <div >
                   <input
                     onClick={onClickCreate}
                     type="submit"
@@ -332,7 +341,7 @@ const FormPage = () => {
                     value="CREATE"
                     id="submitCreate"
                     disabled={createButtonDisabled}
-                    className={styles.input}
+                    className={styles.button}
                   />
                 </div>
               </div>

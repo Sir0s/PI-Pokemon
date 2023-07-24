@@ -13,13 +13,22 @@ import {
   SET_SELECTED_TYPE,
   SET_FILTER_OPTION,
   SET_SORT_ORDER,
+  SET_LOADING,
 } from './action_types';
 
 const URL_SERVER_POKEMONS = 'http://localhost:3001/pokemons';
 const URL_SERVER_TYPES = 'http://localhost:3001/types';
 
+export const setLoading = (loading) => {
+  return {
+    type: SET_LOADING,
+    payload: loading,
+  };
+};
+
 export const getPokemons = () => {
   return function (dispatch) {
+    dispatch(setLoading(true)); 
     axios
       .get(URL_SERVER_POKEMONS)
       .then((response) => {
@@ -30,12 +39,16 @@ export const getPokemons = () => {
       })
       .catch((error) => {
         console.log(`Error de conexión con el servidor. Error: ${error.message}`);
+      })
+      .finally(() => {
+        dispatch(setLoading(false)); 
       });
   };
 };
 
 export const getTypes = () => {
   return function (dispatch) {
+    dispatch(setLoading(true)); 
     axios
       .get(URL_SERVER_TYPES)
       .then((response) => {
@@ -46,6 +59,9 @@ export const getTypes = () => {
       })
       .catch((error) => {
         console.log(`Error de conexión con el servidor. Error: ${error.message}`);
+      })
+      .finally(() => {
+        dispatch(setLoading(false)); 
       });
   };
 };

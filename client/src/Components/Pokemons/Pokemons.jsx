@@ -2,13 +2,14 @@ import React from "react";
 import Pokemon from "../Pokemon/Pokemon";
 import { Link } from "react-router-dom";
 import styles from "./Pokemons.module.css"
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
-export default function Pokemons({ pokes }) {
+export default function Pokemons({ pokes, isLoading }) {
 
   return (
     <div className={styles.cards}>
       
-      {pokes.map((pokemon) => {
+       {isLoading? <LoadingScreen/>: pokes.map((pokemon) => {
         return (
           <Link to={`/pokemons/${pokemon.id}`} key={pokemon.id}>
             <Pokemon
@@ -29,5 +30,5 @@ export default function Pokemons({ pokes }) {
         );
       })}
     </div>
-  );
+    );
 }

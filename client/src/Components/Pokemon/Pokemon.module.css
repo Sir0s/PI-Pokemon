@@ -28,7 +28,7 @@
     transform: translateY(-10px);
     box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.3);
   }
-  h2 {
+  .name {
     font-size: 1.8rem;
     margin: 10px 0; 
   }

@@ -9,11 +9,14 @@ import {
 import Pokemons from "../Pokemons/Pokemons";
 import NavBar from "../NavBar/NavBar";
 import SearchBar from "../SearchBar/SearchBar";
-import styles from "./Home.module.css";
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
+import styles from "./Home.module.css"; 
+
+
 
 export default function Home() {
   const dispatch = useDispatch();
-
+  const loading = useSelector((state)=> state.loading)
   const allPokemons = useSelector((state) => state.pokemons);
   const allTypes = useSelector((state) => state.types);
   const selectedType = useSelector((state) => state.selectedType);
@@ -97,7 +100,6 @@ export default function Home() {
     const sorted = sortPokemons(filtered);
     setFilteredPokemons(sorted);
     setCurrentPage(1);
-    
     //eslint-disable-next-line
   }, [allPokemons, selectedType, filterOption, sortOrder]);
 
@@ -122,7 +124,9 @@ export default function Home() {
   };
 
   return (
+
     <div>
+
       <div>
         <NavBar />
       </div>
@@ -132,14 +136,14 @@ export default function Home() {
           <div className={styles.SearchBar_container}>
             <SearchBar setSearchResults={handleSearchResults} />
           </div>
-          
+
           <div className={styles.filter_container}>
             <label>Filters: TYPE: </label>
             <select
               value={selectedType}
               onChange={(e) => handleTypeChange(e.target.value)}
             >
-              <option value="">All</option> 
+              <option value="">All</option>
               {allTypes?.map((type, index) => (
                 <option key={index} value={type.name}>
                   {type.name}
@@ -157,36 +161,37 @@ export default function Home() {
                 <option value="DB">DB</option>
               </select>
             </div>
-          </div>  
-            <div className={styles.Order_container}>
-              <div className={styles.orders}>
-                <span>ORDER: </span>
-                <button
-                  className={styles.button}
-                  onClick={() => handleSortOrderChange("asc")}
-                >
-                  A-Z
-                </button>
-                <button
-                  className={styles.button}
-                  onClick={() => handleSortOrderChange("desc")}
-                >
-                  Z-A
-                </button>
-                <button
-                  className={styles.button}
-                  onClick={() => handleSortOrderChange("attack_asc")}
-                >
-                  Lowest Attack
-                </button>
-                <button
-                  className={styles.button}
-                  onClick={() => handleSortOrderChange("attack_desc")}
-                >
-                  Highest Attack
-                </button>
-              </div>
+          </div>
+          
+          <div className={styles.Order_container}>
+            <div className={styles.orders}>
+              <span>ORDER: </span>
+              <button
+                className={styles.button}
+                onClick={() => handleSortOrderChange("asc")}
+              >
+                A-Z
+              </button>
+              <button
+                className={styles.button}
+                onClick={() => handleSortOrderChange("desc")}
+              >
+                Z-A
+              </button>
+              <button
+                className={styles.button}
+                onClick={() => handleSortOrderChange("attack_asc")}
+              >
+                Lowest Attack
+              </button>
+              <button
+                className={styles.button}
+                onClick={() => handleSortOrderChange("attack_desc")}
+              >
+                Highest Attack
+              </button>
             </div>
+          </div>
         </div>
         
         <div className={styles.pagination}>
@@ -195,7 +200,7 @@ export default function Home() {
               <button
                 key={pageNumber}
                 className={`${styles.pageButton} ${
-                  pageNumber === currentPage ? "disabled" : ""
+                  pageNumber === currentPage ? styles.disabled : ""
                 }`}
                 onClick={() => handlePageChange(pageNumber)}
                 disabled={pageNumber === currentPage}
@@ -204,13 +209,20 @@ export default function Home() {
               </button>
             )
           )}
-          <button className={styles.pageButton} onClick={handleReset}>
+          <button
+            className={`${styles.pageButton} ${
+              currentPage === 1 ? styles.disabled : ""
+            }`}
+            onClick={handleReset}
+            disabled={currentPage === 1}
+          >
             Reset
           </button>
         </div>
 
         <div className={styles.pokemonList}>
-          <Pokemons pokes={currentPokemons} />
+        {loading ? <LoadingScreen /> : <Pokemons isLoading={loading} pokes={currentPokemons} />}
+         
         </div>
       </div>
     </div>
