@@ -12,6 +12,7 @@
           <h2 className={styles.name}>{name}</h2>
         </div>
         <div>
+          {/*eslint-disable-next-line*/}
           <img className={styles.image} src={image} />
         </div>
         {/* <div>

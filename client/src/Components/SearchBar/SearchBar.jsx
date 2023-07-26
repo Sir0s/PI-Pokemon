@@ -46,15 +46,15 @@ export default function SearchBar({ setSearchResults }) {
 
   return (
     <div className={styles.searchbar}>
-      <input
+      <input className={styles.input}
         type="search"
         placeholder="Enter a name to search."
         onChange={handleChange}
         onKeyPress={handleKey}
         value={search}
       />
-      <button onClick={handleClick}>Search</button>
-      {error && <p>Error: {error}</p>}
+      <button className={styles.button} onClick={handleClick}>Search</button>
+      {error && <p className={styles.p}>Error: {error}</p>}
     </div>
   );
 }

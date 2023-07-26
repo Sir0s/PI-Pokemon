@@ -5,11 +5,13 @@ import styles from "./Pokemons.module.css"
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
 export default function Pokemons({ pokes, isLoading }) {
-
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
   return (
     <div className={styles.cards}>
       
-       {isLoading? <LoadingScreen/>: pokes.map((pokemon) => {
+       {isLoading ? <LoadingScreen />:  pokes.map((pokemon) => {
         return (
           <Link to={`/pokemons/${pokemon.id}`} key={pokemon.id}>
             <Pokemon

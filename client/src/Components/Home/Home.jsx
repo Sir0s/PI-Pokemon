@@ -9,7 +9,7 @@ import {
 import Pokemons from "../Pokemons/Pokemons";
 import NavBar from "../NavBar/NavBar";
 import SearchBar from "../SearchBar/SearchBar";
-import LoadingScreen from "../LoadingScreen/LoadingScreen";
+
 import styles from "./Home.module.css"; 
 
 
@@ -40,6 +40,19 @@ export default function Home() {
     setCurrentPage(pageNumber);
   };
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+  
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  
   const handleReset = () => {
     setSearchResults([]);
     setCurrentPage(1);
@@ -195,33 +208,54 @@ export default function Home() {
         </div>
         
         <div className={styles.pagination}>
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-            (pageNumber) => (
-              <button
-                key={pageNumber}
-                className={`${styles.pageButton} ${
-                  pageNumber === currentPage ? styles.disabled : ""
-                }`}
-                onClick={() => handlePageChange(pageNumber)}
-                disabled={pageNumber === currentPage}
-              >
-                {pageNumber}
-              </button>
-            )
-          )}
-          <button
-            className={`${styles.pageButton} ${
-              currentPage === 1 ? styles.disabled : ""
-            }`}
-            onClick={handleReset}
-            disabled={currentPage === 1}
-          >
-            Reset
-          </button>
-        </div>
+  <button
+    className={`${styles.pageButton} ${
+      currentPage === 1 ? styles.disabled : ""
+    }`}
+    onClick={handlePreviousPage}
+    disabled={currentPage === 1}
+  >
+    Previous
+  </button>
+
+  {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+    (pageNumber) => (
+      <button
+        key={pageNumber}
+        className={`${styles.pageButton} ${
+          pageNumber === currentPage ? styles.disabled : ""
+        }`}
+        onClick={() => handlePageChange(pageNumber)}
+        disabled={pageNumber === currentPage}
+      >
+        {pageNumber}
+      </button>
+    )
+  )}
+
+  <button
+    className={`${styles.pageButton} ${
+      currentPage === totalPages ? styles.disabled : ""
+    }`}
+    onClick={handleNextPage}
+    disabled={currentPage === totalPages}
+  >
+    Next
+  </button>
+
+  <button
+    className={`${styles.pageButton} ${
+      currentPage === 1 ? styles.disabled : ""
+    }`}
+    onClick={handleReset}
+    disabled={currentPage === 1}
+  >
+    Reset
+  </button>
+</div>
 
         <div className={styles.pokemonList}>
-        {loading ? <LoadingScreen /> : <Pokemons isLoading={loading} pokes={currentPokemons} />}
+         <Pokemons isLoading={loading} pokes={currentPokemons} />
          
         </div>
       </div>

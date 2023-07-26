@@ -8,12 +8,14 @@
   background-attachment: fixed;
   background-color: #f0e10f;
   padding: 10px;
+  
 }
 
 .pokemonList {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  margin-bottom: 24vh;
 }
 
 .filters_and_searchbar_container {
